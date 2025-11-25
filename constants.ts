@@ -244,7 +244,7 @@ export const PROJECTS: Project[] = [
                 ]
             },
             {
-                title: 'VisualStrategy',
+                title: 'Visual Strategy',
                 content: 'Through brainstorming, the design team shaped the AI’s persona. We envisioned her as a delicate, gentle, and intelligent woman. I wanted users to sense her presence in the most subtle and elegant way.',
                 units: [
                     {
