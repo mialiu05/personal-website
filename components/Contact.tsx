@@ -221,7 +221,7 @@ export const Contact: React.FC = () => {
 
             {/* Resume Download Button */}
             <a 
-                href="https://raw.githubusercontent.com/mialiu05/portfolio-assets/0b3ea60e75176203c59fd4721f0c3d4c30250004/Miao%20Liu%20Product%20Design%20CV.pdf" 
+                href="https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/Miao%20Liu%20Product%20Design%20CV.pdf" 
                 download
                 className="inline-flex items-center gap-2 text-base md:text-lg font-medium hover:text-swiss-red transition-colors border-b-2 border-transparent hover:border-swiss-red pb-0.5 group"
             >
