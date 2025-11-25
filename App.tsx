@@ -169,7 +169,7 @@ const App: React.FC = () => {
                         
                         <div className={`transition-all duration-1000 delay-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${aboutVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                           <a 
-                            href="https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/Miao%20Liu%20Product%20Design%20CV.pdf?v=20251125" 
+                            href="https://raw.githubusercontent.com/mialiu05/portfolio-assets/27e2ad8b19a574e482443dbe81c0a2d412797cda/Miao%20Liu%20-%20Product%20Designer%20CV.pdf" 
                             download
                             className="inline-flex items-center gap-3 border border-black px-8 py-4 text-xs font-bold tracking-widest hover:bg-black hover:text-white transition-all duration-300 group"
                           >
