@@ -85,35 +85,46 @@ const AutoPlayVideo: React.FC<{ src: string; className?: string; poster?: string
   // Only use natural height if explicitly h-auto, not for object-contain (which should keep aspect ratio)
   const needsNaturalHeight = className.includes('h-auto');
   
+  // Container class - use grid layout for overlay, similar to LazyImage
+  const containerClass = needsNaturalHeight
+    ? `relative overflow-hidden w-full grid`  // Natural height - removed place-items-stretch to prevent height issues
+    : `relative overflow-hidden w-full h-full grid place-items-stretch`; // Default: fill parent
+  
   return (
-    <div ref={containerRef} className={`relative w-full ${needsNaturalHeight ? '' : 'h-full'} ${className}`}>
-      {/* Placeholder - Show poster or skeleton until video is ready - Always maintain space */}
-      <div 
-        className={`${needsNaturalHeight ? 'relative' : 'absolute inset-0'} transition-opacity duration-500 ${
-          isReady ? 'opacity-0' : 'opacity-100'
-        }`}
-        style={{
-          ...(needsNaturalHeight ? { minHeight: '200px', height: 'auto' } : {}),
-        }}
-      >
-        {poster ? (
-          <img 
-            src={poster} 
-            alt="" 
-            className={`w-full ${needsNaturalHeight ? 'h-auto' : 'h-full'} ${className.includes('object-contain') ? 'object-contain' : 'object-cover'}`}
-            loading="lazy"
-          />
-        ) : (
-          <div 
-            className={`w-full ${needsNaturalHeight ? 'h-auto min-h-[200px]' : 'h-full'}`}
-            style={{
-              background: 'linear-gradient(90deg, #e5e5e5 25%, #f0f0f0 50%, #e5e5e5 75%)',
-              backgroundSize: '200% 100%',
-              animation: 'shimmer 1.5s infinite',
-            }}
-          />
-        )}
-      </div>
+    <div ref={containerRef} className={containerClass}>
+      {/* Placeholder - Show poster or skeleton until video is ready - Only show when not ready */}
+      {!isReady && (
+        <div 
+          className={`col-start-1 row-start-1 w-full ${needsNaturalHeight ? 'h-auto' : 'h-full'} bg-neutral-200 transition-opacity duration-500 opacity-100`}
+          style={{
+            ...(needsNaturalHeight ? { 
+              height: 'auto',
+              minHeight: 0
+            } : {}),
+          }}
+        >
+          {poster ? (
+            <img 
+              src={poster} 
+              alt="" 
+              className={`w-full ${needsNaturalHeight ? 'h-auto' : 'h-full'} ${className.includes('object-contain') ? 'object-contain' : 'object-cover'}`}
+              loading="lazy"
+            />
+          ) : (
+            <div 
+              className={`w-full ${needsNaturalHeight ? 'h-auto' : 'h-full'}`}
+              style={{
+                background: 'linear-gradient(90deg, #e5e5e5 25%, #f0f0f0 50%, #e5e5e5 75%)',
+                backgroundSize: '200% 100%',
+                animation: 'shimmer 1.5s infinite',
+                ...(needsNaturalHeight ? { 
+                  minHeight: 0
+                } : {}),
+              }}
+            />
+          )}
+        </div>
+      )}
       
       {/* Video */}
       {isInView && (
@@ -126,7 +137,7 @@ const AutoPlayVideo: React.FC<{ src: string; className?: string; poster?: string
           playsInline
           loop
           onMouseEnter={handleMouseEnter}
-          className={`block w-full ${needsNaturalHeight ? 'h-auto' : 'h-full'} ${className.includes('object-contain') ? 'object-contain' : 'object-cover'} transition-opacity duration-500 ${
+          className={`col-start-1 row-start-1 block w-full ${needsNaturalHeight ? 'h-auto' : 'h-full'} ${className.includes('object-contain') ? 'object-contain' : 'object-cover'} transition-opacity duration-500 ${
             isReady ? 'opacity-100' : 'opacity-0'
           }`}
         />
@@ -216,7 +227,7 @@ const LazyImage: React.FC<{
   const containerClass = hasAspectRatio
     ? `relative overflow-hidden w-full h-full grid place-items-stretch`  // Fill parent when aspect-ratio is on parent
     : needsNaturalHeight
-      ? `relative overflow-hidden w-full grid place-items-stretch`        // Natural height
+      ? `relative overflow-hidden w-full grid`        // Natural height - removed place-items-stretch to prevent height issues
       : `relative overflow-hidden w-full h-full grid place-items-stretch`; // Default: fill parent
   
   // Placeholder positioning: 
@@ -227,20 +238,23 @@ const LazyImage: React.FC<{
   
   return (
     <div ref={containerRef} className={containerClass}>
-      {/* Placeholder - Skeleton - Always show with fixed dimensions to prevent layout shift */}
-      <div 
-        className={`col-start-1 row-start-1 w-full h-full bg-neutral-200 transition-opacity duration-500 ${
-          isLoaded ? 'opacity-0' : 'opacity-100'
-        }`}
-        style={{
-          background: 'linear-gradient(90deg, #e5e5e5 25%, #f0f0f0 50%, #e5e5e5 75%)',
-          backgroundSize: '200% 100%',
-          animation: isLoaded ? 'none' : 'shimmer 1.5s infinite',
-          ...(needsNaturalHeight ? { minHeight: '200px', height: 'auto' } : {}),
-        }}
-      />
+      {/* Placeholder - Skeleton - Only show when image is not loaded */}
+      {!isLoaded && (
+        <div 
+          className={`col-start-1 row-start-1 w-full ${needsNaturalHeight ? 'h-auto' : 'h-full'} bg-neutral-200 transition-opacity duration-500 opacity-100`}
+          style={{
+            background: 'linear-gradient(90deg, #e5e5e5 25%, #f0f0f0 50%, #e5e5e5 75%)',
+            backgroundSize: '200% 100%',
+            animation: 'shimmer 1.5s infinite',
+            ...(needsNaturalHeight ? { 
+              height: 'auto',
+              minHeight: 0
+            } : {}),
+          }}
+        />
+      )}
       
-      {/* Actual Image */}
+      {/* Actual Image - Always render when in view to maintain layout */}
       {isInView && (
         <img
           ref={imgRef}
@@ -287,7 +301,7 @@ const ImageReveal: React.FC<{ children: React.ReactNode; className?: string }> =
 
   return (
     <div ref={ref} className={`overflow-hidden w-full ${className}`}>
-      <div className={`transition-opacity duration-1000 ease-out w-full ${hasAspectRatio ? 'h-full' : 'h-auto'} ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`transition-opacity duration-1000 ease-out w-full ${hasAspectRatio ? 'h-full' : 'h-auto'} ${isVisible ? 'opacity-100' : 'opacity-0'}`} style={{ minHeight: 0 }}>
         {children}
       </div>
     </div>
@@ -864,7 +878,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                                             <div key={uIdx} className="bg-white border-b border-black/10 last:border-b-0">
                                                 {/* 单元格文字 */}
                                                 {(unit.title || unit.content) && (
-                                                    <div className="p-[1.5em] md:px-[2.5em] pb-[1em]">
+                                                    <div className="p-[1.5em] md:px-[2.5em] pb-[0.5em]">
                                                         <ScrollReveal>
                                                             {unit.title && (
                                                                 <h4 className="text-xl md:text-2xl font-bold mb-[0.5em] tracking-tight">{unit.title}</h4>
@@ -873,11 +887,11 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                                                         </ScrollReveal>
                                                     </div>
                                                 )}
-                                                <ImageReveal className="w-full aspect-video overflow-hidden">
+                                                <ImageReveal className="w-full overflow-hidden">
                                                     {unit.image?.type === 'video' ? (
-                                                        <AutoPlayVideo src={unit.image.url} className="w-full h-full" />
+                                                        <AutoPlayVideo src={unit.image.url} className="w-full h-auto object-contain" />
                                                     ) : (
-                                                        <LazyImage src={unit.image?.url || ''} alt={unit.image?.caption || ''} className="w-full h-full" />
+                                                        <LazyImage src={unit.image?.url || ''} alt={unit.image?.caption || ''} className="w-full h-auto object-contain" />
                                                     )}
                                                 </ImageReveal>
                                             </div>
