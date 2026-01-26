@@ -1,20 +1,29 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Personal Portfolio Website
 
-# Run and deploy your AI Studio app
+This repository contains the source code for my personal portfolio website.
 
-This contains everything you need to run your app locally.
+**Live site:**  
+https://imiaoliu.com
 
-View your app in AI Studio: https://ai.studio/apps/drive/1mOx0Hn_KXc43h23URjdnjLfDhlhQM-W5
+---
 
-## Run Locally
+## Version History
 
-**Prerequisites:**  Node.js
+### V1.1 — January 2026  
+**Update:** Added a new game project to the portfolio.
 
+---
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+# 个人作品集网站
+
+这个仓库包含了我的个人作品集网站的源代码。
+
+**在线地址：**  
+https://imiaoliu.com
+
+---
+
+## 版本历史
+
+### V1.1 — 2026年1月  
+**更新内容：** 在作品集中新增了一个游戏项目。
