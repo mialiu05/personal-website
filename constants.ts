@@ -57,119 +57,111 @@ export const SKILLS = {
 
 export const PROJECTS: Project[] = [
   {
-    id: '1',
-    title: 'Wallpaper Customization',
-    category: 'Design System',
+    id: '4',
+    title: 'Gaming Experience',
+    category: 'Mobile App',
     year: '2025',
-    description: 'Redesigned the wallpaper customization flow and creative features, boosting setup success rate by 46% and user satisfaction by 3.7%.',
-    imageUrl: 'https://i.postimg.cc/NF10byhh/A.png',
-    videoUrl: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/Project%201.mp4',
-    tags: ['UX & UI', 'Multiple Patents', 'Cross-Team Collaboration'],
-    role: 'UX & UI Design, Product Strategy, Cross-Team Collaboration(13 teams), Prototypes',
-    duration: '8 Months',
-    website: 'www.infinixmobility.com/xos/',
+    description: 'Redesigned GT30 gaming experience to activate system and hardware capabilities, driving 47,000+ paid conversions and 35.7% revenue growth.',
+    imageUrl: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/Game%204%20Cover.png',
+    videoUrl: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/Game%20Cover.mp4',
+    tags: ['Gamification', 'Monetization', 'Hardware-Software Integration'],
+    role: 'UX & UI Design, Agile Leadership,Growth Strategy',
+    duration: '4 months',
+    website: 'https://www.infinixmobility.com/gt-30',
     impact: [
-      { value: "7", label: "OS Features" },
-      { value: "12", label: "Patents" },
-      { value: "46.1%", label: "Apply Success Rate" },
-      { value: "3.7%", label: "Overall Satisfaction" }
+        { value: "47k", label: "Paid Conversions" },
+        { value: "35.7%", label: "Revenue Growth" },
+        { value: "11.6%", label: "MAU Growth" },
+        { value: "24.1%", label: "Gaming Brand Awareness" }
     ],
-    intro: 'The brand invested significant design resources in each new phone launch to express its aesthetics and vision, but unclear entry points and a confusing flow led to low wallpaper setup success and user satisfaction. To address this, I restructured the personalization system, refined categorization and naming, and applied modular design to enable users to create richer wallpapers at lower design cost.',
+    intro: 'GT30 had strong gaming hardware, but long entry paths and weak hardware-software coordination prevented these capabilities from becoming part of real gameplay. I restructured game entry, in-game interactions, and hardware integration to better align the system with players’ behavior and unlock both experiential and business value.',
     caseStudy: {
       problem: {
-        title: 'The Gap Between Design and Use',
-        content: 'The brand invested significant design resources into creating unique wallpapers and styles to express its aesthetics and vision. However, the wallpaper page felt like an abandoned library. Users had low success rates in changing wallpapers and little satisfaction with the available styles, revealing a clear gap between design investment and actual experience.',
+        title: 'Game capabilities failed to become part of real gameplay',
+        content: 'To establish the GT series as a gaming brand, hardware capabilities were continuously upgraded. However, the software experience failed to translate these capabilities into real gameplay.',
         images: [
-            { url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/1045d44518431ff6dd8bc483de87219ba7065e24/01.1.png', caption: 'Every new phone launch comes with a new set of wallpapers.' },
-            { url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/47f3c392bbb22f87fd3f6f6063e6ff38664d6ca5/01.2.png', caption: 'User Voices from OS14' }
+            { url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/4.1.1.1.png', caption: 'Brand: Unclear gaming brand identity' },
+            { url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/4.1.1.2.png', caption: 'Product: Low gaming feature adoption and retention' }
         ]
       },
       method: {
-        title: 'Streamlined Architecture',
-        content: '',
-        subsections: [
-            {
-                title: 'Streamlined Architecture',
-                content: 'I acted like a content librarian, organizing wallpapers and other styles by removing, merging, simplifying, and reordering categories and names to create a clearer and more efficient information structure.',
-                units: [
-                    {
-                        content: 'Primitive tokens define the smallest atomic values for spacing, color, and typography.',
-                        image: { 
-                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/1.02.1.1.mp4', 
-                            caption: '',
-                            type: 'video'
-                        }
-                    },
-                    {
-                        content: 'New user data and testing revealed that wallpaper usage could not be separated from its context. Setting wallpapers directly from the lock screen or home screen felt more intuitive to users. Based on this insight, I designed a new flow that unifies style editing across AOD, lock screen, and home screen scenarios.',
-                        image: { 
-                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/1.2.1.2.mp4', 
-                            caption: 'Component states across different interaction modes.',
-                            type: 'video'
-                        }
-                    },
-                    {
-                        content: 'Different device series had distinct focuses in wallpaper presentation. After several iterations, I streamlined the structure into a horizontal entry with a cascading layout, adjusting the order to align with each brand\'s launch focus.',
-                        image: { 
-                            url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/1.2.2.3.png', 
-                            caption: 'Layout grids applied across different viewports.',
-                            type: 'image'
-                        }
-                    },
-                    {
-                        content: 'For other styles such as AOD, lighting effects, and fonts, I unified the settings structure to reduce user cognitive load.',
-                        image: { 
-                            url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/1.2.2.4.png', 
-                            caption: 'Interaction patterns standardized for touch targets.',
-                            type: 'image'
-                        }
-                    }
-                ]
-            },
-            {
-                title: 'Modular System',
-                content: 'High-cost 3D and motion effects were handled by the brand team, while my focus was to explore modular and combinable personalization methods that allow users to “multiply” their creativity and generate more wallpaper variations.',
-                units: [
-                    {
-                        content: 'Vogue Portrait: Portrait * Outline * Background',
-                        image: { 
-                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/1.2.2.1.mp4', 
-                            caption: 'Responsive behavior on foldable displays.',
-                            type: 'video'
-                        }
-                    },
-                    {
-                        content: 'Graffiti: Text * Sticker * Background',
-                        image: { 
-                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/1.2.2.2.mp4', 
-                            caption: 'Vogue Portrait: Portrait * Outline * Background',
-                            type: 'video'
-                        }
-                    },
-                    {
-                        content: 'AI Wallpaper: Text Prompt * Art Style',
-                        image: { 
-                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/1.2.2.3.mp4', 
-                            caption: 'Localization stress testing for text expansion.',
-                            type: 'video'
-                        }
-                    }
-                ]
-            }
+        title: 'Gameplay System Design',
+        content:
+          'I redesigned GT30\'s end-to-end gaming experience to make system and hardware capabilities usable during real gameplay.',
+        blocks: [
+          {
+            title: 'Faster Entry to Gameplay',
+            content:
+              'I focused on shortening the distance between entering the system and starting gameplay by restructuring both Game Space and Game Assistant.',
+            layout: 'vertical',
+            images: [
+              {
+                url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/4.2.1.1%20game%20space.png',
+                caption:
+                  'Game Space redesigned with a clearer swipe structure and optimized information density, shifting launch from browsing and confirmation to direct selection and continuation.'
+              },
+              {
+                url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/4.2.1.2%20game%20assistant.png',
+                caption:
+                  'Game Assistant transformed into a customizable, context-aware block layout, enabling access through spatial memory rather than visual search.'
+              }
+            ]
+          },
+          {
+            title: 'Usable Hardware in Gameplay',
+            content:
+              'I redesigned how gaming hardware was presented and interacted with, focusing on clarity, feedback, and predictability.',
+            layout: 'vertical',
+            images: [
+              {
+                url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/4.2.2.1%20Gt%20trigger.png',
+                caption:
+                  'Shoulder keys were mapped to in-game actions with guided setup and immediate feedback, helping players build reliable muscle memory.'
+              },
+              {
+                url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/4.2.2.2%20fan.png',
+                caption:
+                  'External cooling was expressed through dynamic states and animations rather than static toggles, reinforcing active performance support.'
+              }
+            ]
+          },
+          {
+            title: 'Low-Interruption Intelligence',
+            content:
+              'All intelligent and multimodal features were designed around minimal interruption to avoid being ignored in high-intensity gameplay.',
+            layout: 'vertical',
+            images: [
+              
+              {
+                url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/4.2.3.1%20vocie.png',
+                caption:
+                  'Voice interaction was constrained to command-based execution and enabled only when hands were occupied.'
+              },
+              {
+                url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/4.2.3.2%20magic.png',
+                caption:
+                  'Voice effects were framed as role-based expression that blends naturally into social play.'
+              }
+            ]
+          }
         ]
       },
+      
       result: {
-        title: 'Unified Velocity',
-        content: 'The system deployment had immediate measurable effects on the engineering workflow and product consistency.',
-        items: []
+        title: 'Fluid Navigation',
+        content: 'User testing confirmed that the gesture-based interface significantly improved on-the-go usability.',
+        items: [
+            { title: '50%', description: 'Reduction in input time compared to standard map apps.' },
+            { title: '10k+', description: 'Daily active users achieved within 3 months of launch.' },
+            { title: '4.8', description: 'Average App Store rating based on 500+ reviews.' }
+        ]
       },
       reflection: {
-        title: 'Systems are Living',
+        title: 'Invisible Design',
         content: '',
         items: [
-            { title: 'User Verification', description: 'Design is incomplete without validation. We must confirm via user testing that resources (like wallpapers) are not just designed, but actually discoverable by users.' },
-            { title: 'Synchronized Execution', description: 'Clarity drives efficiency. Using demos and daily syncs bridges the gap between design and code, ensuring the engineering team perfectly understands the vision.' },
-            { title: 'Trust via Transparency', description: 'Collaboration relies on evidence. Maintaining traceable documentation and clear records is the foundation for building trust and accountability across teams.' }
+            { title: 'Design the Funnel, Not the Feature', description: 'I used behavioral data to redesign the path from intent to gameplay and remove hidden drop-offs.' },
+            { title: 'Advanced Users Are Still First-Time Users', description: 'I designed for learnability, not assumed expertise, to help power gamers build muscle memory.' }
         ]
       }
     }
@@ -307,6 +299,124 @@ export const PROJECTS: Project[] = [
     }
   },
   {
+    id: '1',
+    title: 'Wallpaper Customization',
+    category: 'Design System',
+    year: '2025',
+    description: 'Redesigned the wallpaper customization flow and creative features, boosting setup success rate by 46% and user satisfaction by 3.7%.',
+    imageUrl: 'https://i.postimg.cc/NF10byhh/A.png',
+    videoUrl: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/Project%201.mp4',
+    tags: ['UX & UI', 'Multiple Patents', 'Cross-Team Collaboration'],
+    role: 'UX & UI Design, Product Strategy, Cross-Team Collaboration(13 teams), Prototypes',
+    duration: '8 Months',
+    website: 'www.infinixmobility.com/xos/',
+    impact: [
+      { value: "7", label: "OS Features" },
+      { value: "12", label: "Patents" },
+      { value: "46.1%", label: "Apply Success Rate" },
+      { value: "3.7%", label: "Overall Satisfaction" }
+    ],
+    intro: 'The brand invested significant design resources in each new phone launch to express its aesthetics and vision, but unclear entry points and a confusing flow led to low wallpaper setup success and user satisfaction. To address this, I restructured the personalization system, refined categorization and naming, and applied modular design to enable users to create richer wallpapers at lower design cost.',
+    caseStudy: {
+      problem: {
+        title: 'The Gap Between Design and Use',
+        content: 'The brand invested significant design resources into creating unique wallpapers and styles to express its aesthetics and vision. However, the wallpaper page felt like an abandoned library. Users had low success rates in changing wallpapers and little satisfaction with the available styles, revealing a clear gap between design investment and actual experience.',
+        images: [
+            { url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/1045d44518431ff6dd8bc483de87219ba7065e24/01.1.png', caption: 'Every new phone launch comes with a new set of wallpapers.' },
+            { url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/47f3c392bbb22f87fd3f6f6063e6ff38664d6ca5/01.2.png', caption: 'User Voices from OS14' }
+        ]
+      },
+      method: {
+        title: 'Streamlined Architecture',
+        content: '',
+        subsections: [
+            {
+                title: 'Streamlined Architecture',
+                content: 'I acted like a content librarian, organizing wallpapers and other styles by removing, merging, simplifying, and reordering categories and names to create a clearer and more efficient information structure.',
+                units: [
+                    {
+                        content: 'Primitive tokens define the smallest atomic values for spacing, color, and typography.',
+                        image: { 
+                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/1.02.1.1.mp4', 
+                            caption: '',
+                            type: 'video'
+                        }
+                    },
+                    {
+                        content: 'New user data and testing revealed that wallpaper usage could not be separated from its context. Setting wallpapers directly from the lock screen or home screen felt more intuitive to users. Based on this insight, I designed a new flow that unifies style editing across AOD, lock screen, and home screen scenarios.',
+                        image: { 
+                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/1.2.1.2.mp4', 
+                            caption: 'Component states across different interaction modes.',
+                            type: 'video'
+                        }
+                    },
+                    {
+                        content: 'Different device series had distinct focuses in wallpaper presentation. After several iterations, I streamlined the structure into a horizontal entry with a cascading layout, adjusting the order to align with each brand\'s launch focus.',
+                        image: { 
+                            url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/1.2.2.3.png', 
+                            caption: 'Layout grids applied across different viewports.',
+                            type: 'image'
+                        }
+                    },
+                    {
+                        content: 'For other styles such as AOD, lighting effects, and fonts, I unified the settings structure to reduce user cognitive load.',
+                        image: { 
+                            url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/1.2.2.4.png', 
+                            caption: 'Interaction patterns standardized for touch targets.',
+                            type: 'image'
+                        }
+                    }
+                ]
+            },
+            {
+                title: 'Modular System',
+                content: 'High-cost 3D and motion effects were handled by the brand team, while my focus was to explore modular and combinable personalization methods that allow users to “multiply” their creativity and generate more wallpaper variations.',
+                units: [
+                    {
+                        content: 'Vogue Portrait: Portrait * Outline * Background',
+                        image: { 
+                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/1.2.2.1.mp4', 
+                            caption: 'Responsive behavior on foldable displays.',
+                            type: 'video'
+                        }
+                    },
+                    {
+                        content: 'Graffiti: Text * Sticker * Background',
+                        image: { 
+                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/1.2.2.2.mp4', 
+                            caption: 'Vogue Portrait: Portrait * Outline * Background',
+                            type: 'video'
+                        }
+                    },
+                    {
+                        content: 'AI Wallpaper: Text Prompt * Art Style',
+                        image: { 
+                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/1.2.2.3.mp4', 
+                            caption: 'Localization stress testing for text expansion.',
+                            type: 'video'
+                        }
+                    }
+                ]
+            }
+        ]
+      },
+      result: {
+        title: 'Unified Velocity',
+        content: 'The system deployment had immediate measurable effects on the engineering workflow and product consistency.',
+        items: []
+      },
+      reflection: {
+        title: 'Systems are Living',
+        content: '',
+        items: [
+            { title: 'User Verification', description: 'Design is incomplete without validation. We must confirm via user testing that resources (like wallpapers) are not just designed, but actually discoverable by users.' },
+            { title: 'Synchronized Execution', description: 'Clarity drives efficiency. Using demos and daily syncs bridges the gap between design and code, ensuring the engineering team perfectly understands the vision.' },
+            { title: 'Trust via Transparency', description: 'Collaboration relies on evidence. Maintaining traceable documentation and clear records is the foundation for building trust and accountability across teams.' }
+        ]
+      }
+    }
+  },
+  {
     id: '3',
     title: 'Design Guidelines for Display Adaptation',
     category: 'Product Design',
@@ -316,11 +426,11 @@ export const PROJECTS: Project[] = [
     videoUrl: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/Video%20cover%203.mp4',
     tags: ['UX Research', 'Visual Strategy', 'Design Guidelines'],
     role: 'User Research Visual Strategy, Design Standards',
-    duration: '3 Months',
+    duration: '2 months',
     website: 'www.mobile-phantom.com/phantom-v-flip/',
     impact: [
-        { value: "8.8", label: "User Satisfaction", description: "Achieved a +0.5 increase from baseline by improving legibility on low-res screens." },
-        { value: "30+", label: "Applications Guided by New Low-Spec Design Standards", description: "Significant reduction in navigation errors due to improved touch targets and clarity." }
+        { value: "8.8", label: "User Satisfaction" },
+        { value: "30+", label: "Applications Guided by New Low-Spec Design Standards" }
     ],
     intro: 'By defining clear and vibrant design guidelines for low-quality displays, I improved reading efficiency and user satisfaction under limited hardware conditions.',
     caseStudy: {
@@ -392,59 +502,6 @@ export const PROJECTS: Project[] = [
         title: '',
         content: '',
         items: []
-      }
-    }
-  },
-  {
-    id: '4',
-    title: 'User Feedback System',
-    category: 'Mobile App',
-    year: '2022',
-    description: 'Optimizing the post-sales ecosystem by unifying repair and feedback workflows, driving a 35.9% increase in ticket efficiency.',
-    imageUrl: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/3a5db72872f7516c0d6d4c9deba6128d12229473/cover4.png',
-    videoUrl: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/3a5db72872f7516c0d6d4c9deba6128d12229473/cover4.png',
-    tags: ['Web & App', 'Service Design', 'Workflow Optimization'],
-    comingSoon: true,
-    role: 'Product Designer',
-    duration: '4 Months',
-    website: 'App Store / UrbanFlow',
-    impact: [
-        { value: "4.8", label: "App Store Rating" },
-        { value: "10k+", label: "Daily Active Users" },
-        { value: "50%", label: "Faster Input" }
-    ],
-    intro: 'City navigation apps are often cluttered with ads and irrelevant features. Urban Flow is a return to basics—a tool designed for the speed of city life.',
-    caseStudy: {
-      problem: {
-        title: 'Cognitive Load',
-        content: 'Commuters are often rushing. Trying to tap tiny buttons on a complex map while walking is frustrating and unsafe.',
-        images: [
-            { url: 'https://picsum.photos/800/600?random=40', caption: 'Field Study: Commuters struggling with navigation apps during rush hour.' },
-            { url: 'https://picsum.photos/800/600?random=401', caption: 'Thumb Zone Analysis: Most existing controls were out of reach.' }
-        ]
-      },
-      method: {
-        title: 'Thumb Zone Design',
-        content: 'I mapped the entire interface to the bottom third of the screen. Gestures replace buttons: swipe down to search, swipe right for next route. Haptic feedback confirms actions without looking.',
-        image: 'https://picsum.photos/800/500?random=41'
-      },
-      result: {
-        title: 'Fluid Navigation',
-        content: 'User testing confirmed that the gesture-based interface significantly improved on-the-go usability.',
-        items: [
-            { title: '50%', description: 'Reduction in input time compared to standard map apps.' },
-            { title: '10k+', description: 'Daily active users achieved within 3 months of launch.' },
-            { title: '4.8', description: 'Average App Store rating based on 500+ reviews.' }
-        ]
-      },
-      reflection: {
-        title: 'Invisible Design',
-        content: '',
-        items: [
-            { title: 'Onboarding', description: 'Gestures are not intuitive initially. A robust onboarding flow was essential for adoption.' },
-            { title: 'Haptics', description: 'Tactile feedback replaces visual confirmation, allowing "eyes-free" usage.' },
-            { title: 'Constraint', description: 'Removing features is harder than adding them. We said no to 90% of requests.' }
-        ]
       }
     }
   }

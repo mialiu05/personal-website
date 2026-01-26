@@ -1,7 +1,81 @@
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { PROJECTS } from '../constants';
 import { ArrowUpRight } from 'lucide-react';
+
+// Helper Component for Images with Placeholder
+const LazyImage: React.FC<{
+  src: string;
+  alt: string;
+  className?: string;
+  loading?: 'lazy' | 'eager';
+}> = ({ src, alt, className = '', loading = 'lazy' }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(loading === 'eager');
+  const imgRef = useRef<HTMLImageElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (loading === 'eager') return;
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Start loading images before they enter viewport (200px ahead)
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        }
+      },
+      { threshold: 0.01, rootMargin: '200px' }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [loading]);
+
+  const handleLoad = () => {
+    setIsLoaded(true);
+  };
+
+  return (
+    <div ref={containerRef} className={`absolute inset-0 ${className}`}>
+      {/* Placeholder - Skeleton */}
+      <div 
+        className={`absolute inset-0 bg-neutral-200 transition-opacity duration-500 ${
+          isLoaded ? 'opacity-0' : 'opacity-100'
+        }`}
+        style={{
+          background: 'linear-gradient(90deg, #e5e5e5 25%, #f0f0f0 50%, #e5e5e5 75%)',
+          backgroundSize: '200% 100%',
+          animation: isLoaded ? 'none' : 'shimmer 1.5s infinite',
+        }}
+      />
+      
+      {/* Actual Image */}
+      {isInView && (
+        <img
+          ref={imgRef}
+          src={src}
+          alt={alt}
+          loading={loading}
+          decoding="async"
+          onLoad={handleLoad}
+          className={`w-full h-full object-cover transition-opacity duration-500 ${
+            isLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      )}
+      
+      <style>{`
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+      `}</style>
+    </div>
+  );
+};
 
 interface ProjectGridProps {
   onProjectClick?: (projectId: string) => void;
@@ -44,7 +118,7 @@ export const ProjectGrid: React.FC<ProjectGridProps> = ({ onProjectClick, id }) 
         <div className="p-8 md:p-12 border-b md:border-b-0 md:border-r border-black bg-black text-white flex items-center justify-center">
           {/* Level 2: Section Header */}
           <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase text-center leading-none">
-            Selected<br />Works<br /><span className="text-swiss-red">2019-25</span>
+            Selected<br />Works<br /><span className="text-swiss-red">2019-26</span>
           </h2>
         </div>
         <div className="p-8 md:p-12 col-span-1 lg:col-span-2 flex items-center">
@@ -66,16 +140,15 @@ export const ProjectGrid: React.FC<ProjectGridProps> = ({ onProjectClick, id }) 
             className={`text-left group relative border-b border-black ${index % 2 === 0 ? 'md:border-r' : ''} overflow-hidden w-full focus:outline-none focus:ring-2 focus:ring-swiss-red/50 ${project.comingSoon ? 'cursor-default' : 'cursor-pointer'}`}
           >
             <div className="aspect-[4/3] overflow-hidden relative bg-neutral-100">
-              {/* Static Image (Top Layer) */}
-              {/* Style: Always grayscale, fades out on hover to reveal video */}
-              <img 
+              {/* Static Image (Top Layer) - Lazy load below-fold; priority for first */}
+              <LazyImage 
                 src={project.imageUrl} 
                 alt={project.title}
-                className={`absolute inset-0 w-full h-full object-cover z-10 transition-all duration-700 grayscale ${!project.comingSoon ? 'group-hover:opacity-0' : ''}`}
+                loading={index < 2 ? 'eager' : 'lazy'}
+                className={`z-10 transition-all duration-700 grayscale ${!project.comingSoon ? 'group-hover:opacity-0' : ''}`}
               />
               
-              {/* Dynamic Video (Bottom Layer) - Only render if not coming soon and video exists */}
-              {/* Style: Full color, fades in on hover */}
+              {/* Video: preload=none — loads only on hover/play */}
               {!project.comingSoon && project.videoUrl && (
                  <video
                     ref={el => { 
@@ -85,7 +158,7 @@ export const ProjectGrid: React.FC<ProjectGridProps> = ({ onProjectClick, id }) 
                     src={project.videoUrl}
                     muted
                     playsInline
-                    // Loop removed to play only once
+                    preload="none"
                     className="absolute inset-0 w-full h-full object-cover z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                  />
               )}
@@ -122,7 +195,7 @@ export const ProjectGrid: React.FC<ProjectGridProps> = ({ onProjectClick, id }) 
                </h3>
                
                {/* Body (Level 5) */}
-               <p className="text-neutral-600 leading-relaxed text-base md:text-lg max-w-md font-normal">
+               <p className="text-neutral-600 leading-relaxed text-base md:text-lg max-w-5xl font-normal">
                  {project.description}
                </p>
             </div>

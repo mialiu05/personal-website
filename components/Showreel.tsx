@@ -1,5 +1,40 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Play } from 'lucide-react';
+
+const SHOWREEL_VIDEO = 'https://cdn.pixabay.com/video/2016/09/21/5398-183786499_large.mp4';
+
+const ShowreelVideo: React.FC = () => {
+  const [inView, setInView] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) setInView(true); },
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className="absolute inset-0 w-full h-full">
+      {inView && (
+        <video
+          className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-700 grayscale contrast-125"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        >
+          <source src={SHOWREEL_VIDEO} type="video/mp4" />
+        </video>
+      )}
+    </div>
+  );
+};
 
 export const Showreel: React.FC = () => {
   return (
@@ -11,18 +46,8 @@ export const Showreel: React.FC = () => {
          <div className="col-span-3 border-r border-dashed border-white/40 h-full hidden md:block"></div>
       </div>
 
-      {/* Video Background */}
-      <video 
-        className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-700 grayscale contrast-125"
-        autoPlay 
-        muted 
-        loop 
-        playsInline
-        poster="https://picsum.photos/1920/1080?grayscale"
-      >
-        {/* Abstract geometric video source */}
-        <source src="https://cdn.pixabay.com/video/2016/09/21/5398-183786499_large.mp4" type="video/mp4" />
-      </video>
+      {/* Video loads only when section is in viewport; preload=metadata reduces initial transfer */}
+      <ShowreelVideo />
 
       {/* Content Layer */}
       <div className="relative z-30 h-full flex flex-col justify-between p-8 md:p-12">

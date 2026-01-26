@@ -1,17 +1,86 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
+// Helper Component for Images with Placeholder
+const LazyImage: React.FC<{
+  src: string;
+  alt: string;
+  className?: string;
+}> = ({ src, alt, className = '' }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Start loading images before they enter viewport (200px ahead)
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        }
+      },
+      { threshold: 0.01, rootMargin: '200px' }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
+  const handleLoad = () => {
+    setIsLoaded(true);
+  };
+
+  return (
+    <div ref={containerRef} className={`absolute inset-0 ${className}`}>
+      {/* Placeholder - Skeleton */}
+      <div 
+        className={`absolute inset-0 bg-neutral-200 transition-opacity duration-500 ${
+          isLoaded ? 'opacity-0' : 'opacity-100'
+        }`}
+        style={{
+          background: 'linear-gradient(90deg, #e5e5e5 25%, #f0f0f0 50%, #e5e5e5 75%)',
+          backgroundSize: '200% 100%',
+          animation: isLoaded ? 'none' : 'shimmer 1.5s infinite',
+        }}
+      />
+      
+      {/* Actual Image */}
+      {isInView && (
+        <img
+          src={src}
+          alt={alt}
+          onLoad={handleLoad}
+          className={`w-full h-full object-cover transition-opacity duration-500 ${
+            isLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      )}
+      
+      <style>{`
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+      `}</style>
+    </div>
+  );
+};
+
 export const WorkStyle: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Start loading images before they enter viewport
     const observer = new IntersectionObserver(
       ([entry]) => {
         // Toggle visibility based on intersection status to replay animation
         setIsVisible(entry.isIntersecting);
       },
-      { threshold: 0.2 }
+      { threshold: 0.1, rootMargin: '200px' }
     );
 
     if (sectionRef.current) {
@@ -64,10 +133,9 @@ export const WorkStyle: React.FC = () => {
                   }`}
                   style={{ transitionDelay: `${index * 200}ms` }}
               >
-                 <img 
+                 <LazyImage 
                     src={item.image} 
-                    alt={item.title} 
-                    className="w-full h-full object-cover"
+                    alt={item.title}
                 />
               </div>
               

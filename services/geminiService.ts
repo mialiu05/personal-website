@@ -38,7 +38,10 @@ export const initChat = async (): Promise<Chat> => {
     throw new Error("API Key missing");
   }
 
-  const ai = new GoogleGenAI({ apiKey });
+  const ai = new GoogleGenAI({
+    apiKey,
+    httpOptions: { baseUrl: 'https://generativelanguage.googleapis.com' },
+  });
 
   chatSession = ai.chats.create({
     model: 'gemini-2.5-flash',

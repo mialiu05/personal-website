@@ -1,6 +1,76 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
+// Helper Component for Images with Placeholder
+const LazyImage: React.FC<{
+  src: string;
+  alt: string;
+  className?: string;
+}> = ({ src, alt, className = '' }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Start loading images before they enter viewport (200px ahead)
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        }
+      },
+      { threshold: 0.01, rootMargin: '200px' }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
+  const handleLoad = () => {
+    setIsLoaded(true);
+  };
+
+  return (
+    <div ref={containerRef} className={`absolute inset-0 ${className}`}>
+      {/* Placeholder - Skeleton */}
+      <div 
+        className={`absolute inset-0 bg-neutral-800 transition-opacity duration-500 ${
+          isLoaded ? 'opacity-0' : 'opacity-100'
+        }`}
+        style={{
+          background: 'linear-gradient(90deg, #404040 25%, #505050 50%, #404040 75%)',
+          backgroundSize: '200% 100%',
+          animation: isLoaded ? 'none' : 'shimmer 1.5s infinite',
+        }}
+      />
+      
+      {/* Actual Image */}
+      {isInView && (
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+          onLoad={handleLoad}
+          className={`w-full h-full object-cover transition-opacity duration-500 ${
+            isLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      )}
+      
+      <style>{`
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+      `}</style>
+    </div>
+  );
+};
+
 export const LifeGallery: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -17,12 +87,13 @@ export const LifeGallery: React.FC = () => {
   ];
 
   useEffect(() => {
+    // Start loading images before they enter viewport
     const observer = new IntersectionObserver(
       ([entry]) => {
         // Toggle visibility based on intersection status to replay animation
         setIsVisible(entry.isIntersecting);
       },
-      { threshold: 0.2 }
+      { threshold: 0.1, rootMargin: '200px' }
     );
 
     if (sectionRef.current) {
@@ -42,7 +113,7 @@ export const LifeGallery: React.FC = () => {
                         Outside<br/><span className="text-swiss-red">Work</span>
                     </h2>
                     {/* Level 5/6 Hybrid: Caption */}
-                    <p className="text-neutral-400 max-w-xs text-sm font-medium font-mono leading-relaxed transition-all duration-1000 delay-200 ease-[cubic-bezier(0.22,1,0.36,1)]">
+                    <p className="text-neutral-400 max-w-5xl text-sm font-medium font-mono leading-relaxed transition-all duration-1000 delay-200 ease-[cubic-bezier(0.22,1,0.36,1)]">
                         I find energy in travel and sports, currently on a mission to reduce screen time and rediscover the analog world.
                     </p>
                 </div>
@@ -63,10 +134,10 @@ export const LifeGallery: React.FC = () => {
                             }`}
                             style={{ transitionDelay: `${300 + i * 100}ms` }}
                         >
-                            <img 
+                            <LazyImage 
                                 src={src} 
-                                alt={`Gallery ${i}`} 
-                                className="w-full h-full object-cover block"
+                                alt={`Gallery ${i}`}
+                                className="block"
                             />
                         </div>
                     ))}

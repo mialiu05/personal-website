@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { Project } from '../types';
-import { ArrowRight, ExternalLink, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, ExternalLink, ArrowUpRight, List } from 'lucide-react';
 import { PROJECTS } from '../constants';
 import { Contact } from './Contact';
 
@@ -9,53 +9,136 @@ interface ProjectDetailProps {
   project: Project;
   onBack: () => void;
   onNextProject: (id: string) => void;
+  isExiting?: boolean;
 }
 
-// Helper Component for Auto-Playing Videos Once (Triggered by Scroll OR Hover)
-const AutoPlayVideo: React.FC<{ src: string; className?: string }> = ({ src, className }) => {
+// Helper Component for Auto-Playing Videos with Loop and Placeholder
+// 1. Auto-plays when scrolled into view
+// 2. Loops continuously when mouse hovers
+// 3. Shows placeholder (poster or skeleton) until video is ready
+// preload=metadata + optional poster reduce initial bandwidth; full video loads on play.
+const AutoPlayVideo: React.FC<{ src: string; className?: string; poster?: string }> = ({ src, className, poster }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [hasPlayed, setHasPlayed] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // 1. Scroll Trigger
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video || hasPlayed) return;
+    const container = containerRef.current;
+    if (!container) return;
 
+    // Increased rootMargin to start loading video metadata earlier (500px ahead) for smoother experience
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          video.play().catch(err => console.log("Autoplay blocked/failed", err));
-          setHasPlayed(true);
-          observer.disconnect(); // Stop observing after play trigger
+          setIsInView(true);
         }
       },
-      { threshold: 0.25 } // Trigger when 25% visible
+      { threshold: 0.01, rootMargin: '500px' }
     );
 
-    observer.observe(video);
-
+    observer.observe(container);
     return () => observer.disconnect();
-  }, [hasPlayed]);
+  }, []);
 
-  // 2. Hover Trigger
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !isInView) return;
+
+    const handleCanPlay = () => {
+      setIsReady(true);
+      video.play().catch(() => {});
+    };
+
+    const handleLoadedMetadata = () => {
+      // Video metadata loaded, show poster or start loading
+      if (poster) {
+        setIsReady(true);
+      }
+    };
+
+    video.addEventListener('canplay', handleCanPlay);
+    video.addEventListener('loadedmetadata', handleLoadedMetadata);
+    
+    // Auto-play when scrolled into view
+    if (isInView) {
+      video.play().catch(() => {});
+    }
+
+    return () => {
+      video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      if (!isInView) {
+        video.pause();
+      }
+    };
+  }, [isInView, poster]);
+
   const handleMouseEnter = () => {
     const video = videoRef.current;
-    if (video && !hasPlayed) {
-        video.play().catch(err => console.log("Hover play blocked/failed", err));
-        setHasPlayed(true);
+    if (video) {
+      // Ensure video plays and loops when mouse hovers
+      video.play().catch(() => {});
     }
   };
 
+  // Only use natural height if explicitly h-auto, not for object-contain (which should keep aspect ratio)
+  const needsNaturalHeight = className.includes('h-auto');
+  
   return (
-    <video
-      ref={videoRef}
-      src={src}
-      muted
-      playsInline
-      onMouseEnter={handleMouseEnter} // Trigger on hover if not played yet
-      className={`block ${className}`}
-      // No loop attribute ensures it stops after playing once
-    />
+    <div ref={containerRef} className={`relative w-full ${needsNaturalHeight ? '' : 'h-full'} ${className}`}>
+      {/* Placeholder - Show poster or skeleton until video is ready - Always maintain space */}
+      <div 
+        className={`${needsNaturalHeight ? 'relative' : 'absolute inset-0'} transition-opacity duration-500 ${
+          isReady ? 'opacity-0' : 'opacity-100'
+        }`}
+        style={{
+          ...(needsNaturalHeight ? { minHeight: '200px', height: 'auto' } : {}),
+        }}
+      >
+        {poster ? (
+          <img 
+            src={poster} 
+            alt="" 
+            className={`w-full ${needsNaturalHeight ? 'h-auto' : 'h-full'} ${className.includes('object-contain') ? 'object-contain' : 'object-cover'}`}
+            loading="lazy"
+          />
+        ) : (
+          <div 
+            className={`w-full ${needsNaturalHeight ? 'h-auto min-h-[200px]' : 'h-full'}`}
+            style={{
+              background: 'linear-gradient(90deg, #e5e5e5 25%, #f0f0f0 50%, #e5e5e5 75%)',
+              backgroundSize: '200% 100%',
+              animation: 'shimmer 1.5s infinite',
+            }}
+          />
+        )}
+      </div>
+      
+      {/* Video */}
+      {isInView && (
+        <video
+          ref={videoRef}
+          src={src}
+          poster={poster}
+          preload="metadata"
+          muted
+          playsInline
+          loop
+          onMouseEnter={handleMouseEnter}
+          className={`block w-full ${needsNaturalHeight ? 'h-auto' : 'h-full'} ${className.includes('object-contain') ? 'object-contain' : 'object-cover'} transition-opacity duration-500 ${
+            isReady ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      )}
+      
+      <style>{`
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+      `}</style>
+    </div>
   );
 };
 
@@ -65,11 +148,12 @@ const ScrollReveal: React.FC<{ children: React.ReactNode; delay?: number; classN
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Start revealing slightly before element enters viewport for smoother experience
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) setIsVisible(true);
       },
-      { threshold: 0.1 }
+      { threshold: 0.05, rootMargin: '100px' }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
@@ -86,25 +170,124 @@ const ScrollReveal: React.FC<{ children: React.ReactNode; delay?: number; classN
   );
 };
 
-// Helper for Image Reveal Animation - FADE ONLY
+// Helper Component for Images with Placeholder
+const LazyImage: React.FC<{
+  src: string;
+  alt: string;
+  className?: string;
+  loading?: 'lazy' | 'eager';
+  decoding?: 'async' | 'auto' | 'sync';
+}> = ({ src, alt, className = '', loading = 'lazy', decoding = 'async' }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Increased rootMargin to start loading earlier (500px ahead) for smoother experience
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        }
+      },
+      { threshold: 0.01, rootMargin: '500px' }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
+  const handleLoad = () => {
+    setIsLoaded(true);
+  };
+
+  // Determine if we need to maintain aspect ratio or allow natural height
+  const hasAspectRatio = className.includes('aspect-');
+  const needsNaturalHeight = className.includes('h-auto');
+  
+  // Container class logic:
+  // - If className has aspect-ratio, container should fill parent (h-full) and aspect-ratio is handled by parent
+  // - If needsNaturalHeight, use natural height
+  // - Otherwise, fill parent container
+  const containerClass = hasAspectRatio
+    ? `relative overflow-hidden w-full h-full grid place-items-stretch`  // Fill parent when aspect-ratio is on parent
+    : needsNaturalHeight
+      ? `relative overflow-hidden w-full grid place-items-stretch`        // Natural height
+      : `relative overflow-hidden w-full h-full grid place-items-stretch`; // Default: fill parent
+  
+  // Placeholder positioning: 
+  // - If container has aspect-ratio class, use absolute to fill (aspect ratio is handled by container)
+  // - If needsNaturalHeight, use relative with minHeight
+  // - Otherwise, use absolute to fill container
+  // const placeholderPosition = needsNaturalHeight ? 'relative' : 'absolute inset-0';
+  
+  return (
+    <div ref={containerRef} className={containerClass}>
+      {/* Placeholder - Skeleton - Always show with fixed dimensions to prevent layout shift */}
+      <div 
+        className={`col-start-1 row-start-1 w-full h-full bg-neutral-200 transition-opacity duration-500 ${
+          isLoaded ? 'opacity-0' : 'opacity-100'
+        }`}
+        style={{
+          background: 'linear-gradient(90deg, #e5e5e5 25%, #f0f0f0 50%, #e5e5e5 75%)',
+          backgroundSize: '200% 100%',
+          animation: isLoaded ? 'none' : 'shimmer 1.5s infinite',
+          ...(needsNaturalHeight ? { minHeight: '200px', height: 'auto' } : {}),
+        }}
+      />
+      
+      {/* Actual Image */}
+      {isInView && (
+        <img
+          ref={imgRef}
+          src={src}
+          alt={alt}
+          loading={loading}
+          decoding={decoding}
+          onLoad={handleLoad}
+          className={`col-start-1 row-start-1 block w-full ${needsNaturalHeight ? 'h-auto' : 'h-full'} ${className.includes('object-contain') ? 'object-contain' : className.includes('object-cover') ? 'object-cover' : ''} transition-opacity duration-500 ${
+            isLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      )}
+      
+      <style>{`
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+// Helper for Image Reveal Animation - FADE ONLY (now wraps LazyImage)
 const ImageReveal: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Increased rootMargin to start loading images earlier (500px ahead) for smoother experience
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) setIsVisible(true);
       },
-      { threshold: 0.1 }
+      { threshold: 0.05, rootMargin: '500px' }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
 
+  // Check if className contains aspect-ratio - if so, inner div needs h-full to inherit height
+  const hasAspectRatio = className.includes('aspect-');
+
   return (
     <div ref={ref} className={`overflow-hidden w-full ${className}`}>
-      <div className={`transition-opacity duration-1000 ease-out w-full h-full ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`transition-opacity duration-1000 ease-out w-full ${hasAspectRatio ? 'h-full' : 'h-auto'} ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
         {children}
       </div>
     </div>
@@ -112,7 +295,7 @@ const ImageReveal: React.FC<{ children: React.ReactNode; className?: string }> =
 };
 
 
-export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, onNextProject }) => {
+export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, onNextProject, isExiting = false }) => {
   
   // Logic to find the next available project, skipping "Coming Soon" items
   const availableProjects = PROJECTS.filter(p => !p.comingSoon);
@@ -120,8 +303,10 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
   const nextIndex = (currentIndex + 1) % availableProjects.length;
   const nextProject = availableProjects[nextIndex];
 
+  const isGT30 = project.id === '4';
+
   const [activeSection, setActiveSection] = useState<string>('');
-  const [showFloatingToc, setShowFloatingToc] = useState(false);
+  const [tocOpen, setTocOpen] = useState(false);
 
   // Canvas Animation Refs
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -152,6 +337,17 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
     }, 700);
   };
 
+  // Helper function to normalize website URL
+  const normalizeWebsiteUrl = (url: string | undefined): string => {
+    if (!url) return '';
+    // If URL already starts with http:// or https://, use it as is
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    // Otherwise, prepend https://
+    return `https://${url}`;
+  };
+
   const metaDetails = [
     { label: 'Duration', value: project.duration },
     { label: 'Website', value: project.website, isLink: true },
@@ -160,13 +356,14 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      const offset = 100; 
+      const offset = 100;
       const elementPosition = el.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
       window.scrollTo({
         top: offsetPosition,
         behavior: "smooth"
       });
+      setTocOpen(false);
     }
   };
 
@@ -178,26 +375,53 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
     const handleScroll = () => {
       const sectionIds = sections.map(s => s.toLowerCase());
       
-      // 1. Active Section Spy
+      let foundActive = false;
       for (const section of sectionIds) {
         const element = document.getElementById(section);
         if (element) {
           const rect = element.getBoundingClientRect();
+          // Check if section is active (near top of viewport)
           if (rect.top >= 0 && rect.top <= window.innerHeight * 0.4) {
             setActiveSection(section);
+            foundActive = true;
             break;
+          }
+          // Also check if we are scrolling up and section is already visible
+          if (rect.bottom > 0 && rect.top < window.innerHeight * 0.4) {
+             setActiveSection(section);
+             foundActive = true;
+             // Don't break here to find the topmost one if overlapping, but usually break is fine for top-down scan
+             break;
           }
         }
       }
 
-      // 2. Floating TOC Visibility Logic
-      const wrapper = document.getElementById('case-study-wrapper');
-      if (wrapper) {
-        const rect = wrapper.getBoundingClientRect();
-        // Visible as soon as the top of content enters view (top < screenHeight)
-        // Hides when bottom scrolls past the top (bottom < 100) or pushed fully below (top > screenHeight)
-        const isVisible = rect.top < window.innerHeight && rect.bottom > 150;
-        setShowFloatingToc(isVisible);
+      // If no section is found active, check if we are past the last section or before the first
+      if (!foundActive) {
+          // Check if we are past the last content area (Outcome or Reflection)
+          // The last section is sections[sections.length - 1]
+          const lastSectionId = sections[sections.length - 1].toLowerCase();
+          const lastElement = document.getElementById(lastSectionId);
+          
+          if (lastElement) {
+              const rect = lastElement.getBoundingClientRect();
+              if (rect.bottom < 0) {
+                  // We scrolled past the last section
+                  setActiveSection('');
+              } else {
+                  // We might be before the first section or between sections
+                  // Check first section
+                  const firstSectionId = sections[0].toLowerCase();
+                  const firstElement = document.getElementById(firstSectionId);
+                  if (firstElement) {
+                      const firstRect = firstElement.getBoundingClientRect();
+                      if (firstRect.top > window.innerHeight) {
+                          // Before the first section
+                          setActiveSection('');
+                      }
+                  }
+              }
+          }
       }
     };
 
@@ -430,32 +654,67 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
       );
   };
 
-  const FloatingToc = () => (
-      <div className={`lg:hidden fixed z-40 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] pointer-events-none top-0 left-0 w-full h-full ${showFloatingToc ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-            <div className="hidden md:block absolute left-8 top-32 w-[180px] pointer-events-auto">
-                <div className="bg-white/80 backdrop-blur-md border border-black/5 shadow-sm p-5 rounded-sm">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-4 block">Contents</span>
-                    <div>{renderTocItems(false)}</div>
-                </div>
-            </div>
-            <div className="md:hidden absolute left-4 top-24 w-[140px] pointer-events-auto">
-                <div className="bg-white/90 backdrop-blur-md border border-black/5 shadow-sm p-4 rounded-sm">
-                    <span className="text-[8px] font-bold uppercase tracking-widest text-neutral-400 mb-3 block">Contents</span>
-                    <div>{renderTocItems(true)}</div>
-                </div>
-            </div>
-      </div>
-  );
+  const FloatingToc = () => {
+      // Only show TOC when we are in the case study content area
+      // activeSection is set by the scroll listener in useEffect above
+      // It will be non-empty when we are in Challenge, Approach, Outcome, or Reflection
+      const shouldShow = activeSection !== '';
 
-  // Grid class for Summary Outcome - 2 items (50/50), 4 items (4 cols), 3 items (3 cols)
+      return (
+      <>
+        {/* Toggle button: always visible below lg so Contents never "disappears" */}
+        <button
+          type="button"
+          onClick={() => setTocOpen((o) => !o)}
+          aria-label="Toggle contents"
+          className={`lg:hidden fixed bottom-6 left-6 z-50 flex items-center gap-2 bg-white border-2 border-black px-4 py-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-black hover:text-white transition-all duration-300 font-mono text-xs font-bold uppercase tracking-widest ${shouldShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
+        >
+          <List size={16} />
+          Contents
+        </button>
+        {/* Overlay + panel: floating layer when open */}
+        <div
+          className={`lg:hidden fixed inset-0 z-40 transition-all duration-300 ease-out ${
+            tocOpen && shouldShow ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+        >
+          <div
+            className="absolute inset-0 bg-black/20 backdrop-blur-[2px]"
+            aria-hidden="true"
+            onClick={() => setTocOpen(false)}
+          />
+          <div className="hidden md:block absolute left-8 top-28 w-[180px]">
+            <div className="bg-white/95 backdrop-blur-md border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-5 rounded-sm">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-4 block">Contents</span>
+              <div>{renderTocItems(false)}</div>
+            </div>
+          </div>
+          <div className="md:hidden absolute left-4 right-4 top-24 max-w-[200px]">
+            <div className="bg-white/95 backdrop-blur-md border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-4 rounded-sm">
+              <span className="text-[8px] font-bold uppercase tracking-widest text-neutral-400 mb-3 block">Contents</span>
+              <div>{renderTocItems(true)}</div>
+            </div>
+          </div>
+        </div>
+      </>
+  );
+  };
+
+  // Grid class for Summary Outcome - Responsive grid that adapts to screen size
+  // 2 items: 1 col (mobile) → 2 cols (tablet+)
+  // 3 items: 1 col (mobile) → 2 cols (tablet) → 3 cols (desktop)
+  // 4 items: 1 col (mobile) → 2 cols (tablet) → 4 cols (desktop)
   const outcomeGridClass = project.impact.length === 2
-    ? 'grid-cols-1 md:grid-cols-2'
+    ? 'grid-cols-1 sm:grid-cols-2'
     : project.impact.length >= 4 
-        ? 'grid-cols-2 md:grid-cols-2 lg:grid-cols-4' 
-        : 'grid-cols-2 md:grid-cols-3';
+        ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4' 
+        : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3';
   
   return (
-    <div key={project.id} className="min-h-screen bg-white pt-16 animate-page-enter shadow-2xl relative">
+    <div
+      key={project.id}
+      className={`min-h-screen bg-white pt-16 shadow-2xl relative ${isExiting ? 'animate-page-fade-out pointer-events-none' : 'animate-page-fade-in'}`}
+    >
       <FloatingToc />
       <section className="border-b border-black bg-white relative overflow-hidden min-h-[40vh] flex flex-col justify-center">
         <canvas ref={canvasRef} className="absolute inset-0 z-0" />
@@ -476,22 +735,22 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
       <section className="border-b border-black">
         <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
             <div className="lg:col-span-7 border-b lg:border-b-0 lg:border-r border-black bg-neutral-100">
-                <ImageReveal className="w-full aspect-[4/3] relative group overflow-hidden">
+                <ImageReveal className="w-full aspect-[4/3] lg:aspect-[4/3] relative group overflow-hidden">
                      {project.videoUrl ? (
-                         <AutoPlayVideo src={project.videoUrl} className="w-full h-full object-cover" />
+                         <AutoPlayVideo src={project.videoUrl} poster={project.imageUrl} className="w-full h-full object-cover" />
                      ) : (
-                         <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover" />
+                         <LazyImage src={project.imageUrl} alt={project.title} className="w-full h-full" loading="eager" />
                      )}
                 </ImageReveal>
             </div>
 
-            <div className="lg:col-span-5 p-8 md:p-12 flex flex-col justify-between h-full">
-                <div>
+            <div className="lg:col-span-5 p-6 md:p-8 lg:p-12 flex flex-col">
+                <div className="mb-8">
                     <ScrollReveal>
                         <h3 className="text-xs font-bold uppercase tracking-widest mb-4 text-swiss-red flex items-center gap-2">
                            <span className="w-2 h-2 bg-black block"></span> Overview
                         </h3>
-                        <p className="text-lg font-medium leading-relaxed text-neutral-800 mb-8">{project.intro}</p>
+                        <p className="text-base md:text-lg lg:text-xl font-medium leading-relaxed text-neutral-800">{project.intro}</p>
                     </ScrollReveal>
                 </div>
                 
@@ -506,26 +765,26 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                                 <div key={item.label}>
                                     <span className="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-1">{item.label}</span>
                                     {item.isLink ? (
-                                        <a href={`https://${item.value}`} target="_blank" rel="noreferrer" className="text-sm md:text-base font-bold flex items-center gap-2 hover:text-swiss-red transition-colors truncate">
-                                            {item.value} <ExternalLink size={12} />
+                                        <a href={normalizeWebsiteUrl(item.value)} target="_blank" rel="noreferrer" className="text-sm md:text-base font-bold flex items-center gap-2 hover:text-swiss-red transition-colors break-words">
+                                            <span className="break-all">{item.value}</span> <ExternalLink size={12} className="flex-shrink-0" />
                                         </a>
                                     ) : (
-                                        <span className="text-sm md:text-base font-bold block truncate">{item.value}</span>
+                                        <span className="text-sm md:text-base font-bold block break-words">{item.value}</span>
                                     )}
                                 </div>
                             ))}
                          </div>
                     </div>
 
-                    <div className="border-t border-black/10 pt-4">
+                    <div className="border-t border-black/10 pt-6">
                         <span className="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-3">Outcome</span>
                         <div className={`grid ${outcomeGridClass} gap-4`}>
                             {project.impact.map((item, idx) => (
                                 <div key={idx}>
-                                    <span className="block text-2xl md:text-3xl font-black text-swiss-red tracking-tighter leading-none mb-1">{item.value}</span>
-                                    <p className="text-xs md:text-sm font-bold leading-tight text-black mb-2">{item.label}</p>
+                                    <span className="block text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-swiss-red tracking-tighter leading-none mb-1 whitespace-nowrap">{item.value}</span>
+                                    <p className="text-sm md:text-base font-bold leading-tight text-black mb-2">{item.label}</p>
                                     {item.description && (
-                                        <p className="text-xs md:text-sm font-normal leading-relaxed text-neutral-500">{item.description}</p>
+                                        <p className="text-sm md:text-base font-normal leading-relaxed text-neutral-500">{item.description}</p>
                                     )}
                                 </div>
                             ))}
@@ -539,18 +798,18 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
       <section id="case-study-wrapper" className="border-b border-black relative">
         <div className="grid grid-cols-1 lg:grid-cols-12">
             <div className="hidden lg:block lg:col-span-3 border-r border-black">
-                <div className="sticky top-24 p-12">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-6 block">Contents</span>
+                <div className="sticky top-24 p-8">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-4 block">Contents</span>
                     <div>{renderTocItems(false)}</div>
                 </div>
             </div>
 
             <div className="col-span-1 lg:col-span-9 bg-white">
                 <div id="challenge" className="border-b border-black/10">
-                     <div className="p-8 md:p-12 md:pb-8 max-w-5xl">
+                     <div className="p-[1.5em] md:p-[2.5em] max-w-5xl">
                         <ScrollReveal>
-                            <span className="text-swiss-red font-mono text-xs font-bold uppercase tracking-widest mb-4 block">01. THE CHALLENGE</span>
-                            <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-6 leading-[0.9]">{project.caseStudy.problem.title}</h2>
+                            <span className="text-swiss-red font-mono text-xs font-bold uppercase tracking-widest mb-[0.75em] block">01. THE CHALLENGE</span>
+                            <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-[0.4em] leading-[0.9]">{project.caseStudy.problem.title}</h2>
                             <p className="text-base md:text-lg leading-relaxed text-neutral-600 max-w-5xl">{project.caseStudy.problem.content}</p>
                         </ScrollReveal>
                      </div>
@@ -558,11 +817,11 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                         <div className="border-t border-black/10 grid grid-cols-1 md:grid-cols-2 gap-px bg-black/10">
                             {project.caseStudy.problem.images.map((img, idx) => (
                                 <div key={idx} className="bg-white flex flex-col h-full">
-                                    <ImageReveal className={`${project.id === '3' ? 'aspect-[7/9]' : 'aspect-[4/3]'} overflow-hidden border-b border-black/10`}>
-                                        <img src={img.url} alt={img.caption} className="w-full h-full object-cover block" />
+                                    <ImageReveal className={`${project.id === '3' ? 'aspect-[7/9]' : 'aspect-[4/3]'} overflow-hidden border-b border-black/10 flex-shrink-0`}>
+                                        <LazyImage src={img.url} alt={img.caption} className="w-full h-full" />
                                     </ImageReveal>
-                                    <div className="p-6 flex-1">
-                                        <p className="text-xs font-mono leading-relaxed text-neutral-500 border-l-2 border-swiss-red pl-3">{img.caption}</p>
+                                    <div className="py-[0.75em] px-[1em] flex-1">
+                                        <p className="text-sm md:text-base font-mono leading-relaxed text-neutral-500 border-l-2 border-swiss-red pl-[0.75em]">{img.caption}</p>
                                     </div>
                                 </div>
                             ))}
@@ -570,17 +829,17 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                      )}
                      {!project.caseStudy.problem.images && project.caseStudy.problem.image && (
                         <ImageReveal className="w-full aspect-video md:aspect-[21/9] border-t border-black/10 overflow-hidden">
-                            <img src={project.caseStudy.problem.image} alt="Challenge" className="w-full h-full object-cover block" />
+                            <LazyImage src={project.caseStudy.problem.image} alt="Challenge" className="w-full h-full" />
                         </ImageReveal>
                      )}
                 </div>
 
                  <div id="approach" className="border-b border-black/10">
                     {!project.caseStudy.method.subsections && !project.caseStudy.method.blocks ? (
-                        <div className="p-8 md:p-12 md:pb-8 max-w-5xl">
+                        <div className="p-[1.5em] md:p-[2.5em] max-w-5xl">
                             <ScrollReveal>
-                                <span className="text-swiss-red font-mono text-xs font-bold uppercase tracking-widest mb-4 block">02. THE APPROACH</span>
-                                <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-6 leading-[0.9]">{project.caseStudy.method.title}</h2>
+                                <span className="text-swiss-red font-mono text-xs font-bold uppercase tracking-widest mb-[0.75em] block">02. THE APPROACH</span>
+                                <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-[0.4em] leading-[0.9]">{project.caseStudy.method.title}</h2>
                                 <p className="text-base md:text-lg leading-relaxed text-neutral-600 max-w-5xl">{project.caseStudy.method.content}</p>
                             </ScrollReveal>
                         </div>
@@ -591,10 +850,10 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                             {project.caseStudy.method.subsections.map((sub, sIdx) => (
                                 <div key={sIdx} className={`bg-white ${sIdx !== (project.caseStudy.method.subsections?.length || 0) - 1 ? 'border-b border-black/10' : ''}`}>
                                     {/* 标题区域 */}
-                                    <div className="p-8 md:p-12 md:pb-8">
+                                    <div className="p-[1.5em] md:p-[2.5em]">
                                         <ScrollReveal>
-                                            {sIdx === 0 && <span className="text-swiss-red font-mono text-xs font-bold uppercase tracking-widest mb-4 block">02. THE APPROACH</span>}
-                                            <h3 className="text-3xl md:text-5xl font-black tracking-tighter mb-6 leading-[0.9]">{sub.title}</h3>
+                                            {sIdx === 0 && <span className="text-swiss-red font-mono text-xs font-bold uppercase tracking-widest mb-[1em] block">02. THE APPROACH</span>}
+                                            <h3 className="text-3xl md:text-5xl font-black tracking-tighter mb-[0.4em] leading-[0.9]">{sub.title}</h3>
                                             <p className="text-base md:text-lg leading-relaxed text-neutral-600 max-w-5xl">{sub.content}</p>
                                         </ScrollReveal>
                                     </div>
@@ -602,25 +861,23 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                                     {/* 图片/视频单元格区域 */}
                                     <div className="border-t border-black/10">
                                         {sub.units.map((unit, uIdx) => (
-                                            <div key={uIdx} className="bg-white border-b border-black/10 last:border-b-0 flex flex-col">
+                                            <div key={uIdx} className="bg-white border-b border-black/10 last:border-b-0">
                                                 {/* 单元格文字 */}
                                                 {(unit.title || unit.content) && (
-                                                    <div className="p-8 md:px-12 md:pb-6">
+                                                    <div className="p-[1.5em] md:px-[2.5em] pb-[1em]">
                                                         <ScrollReveal>
                                                             {unit.title && (
-                                                                <h4 className="text-xl md:text-2xl font-bold mb-3 tracking-tight">{unit.title}</h4>
+                                                                <h4 className="text-xl md:text-2xl font-bold mb-[0.5em] tracking-tight">{unit.title}</h4>
                                                             )}
                                                             <p className="text-base md:text-lg leading-relaxed text-neutral-600 max-w-5xl">{unit.content}</p>
                                                         </ScrollReveal>
                                                     </div>
                                                 )}
-                                                
-                                                {/* 单元格媒体 (Image/Video) - Enforce auto height and block display */}
-                                                <ImageReveal className="w-full overflow-hidden flex flex-col">
+                                                <ImageReveal className="w-full aspect-video overflow-hidden">
                                                     {unit.image?.type === 'video' ? (
-                                                        <AutoPlayVideo src={unit.image.url} className="w-full h-auto block" />
+                                                        <AutoPlayVideo src={unit.image.url} className="w-full h-full" />
                                                     ) : (
-                                                        <img src={unit.image?.url || ''} alt={unit.image?.caption || ''} className="w-full h-auto block" />
+                                                        <LazyImage src={unit.image?.url || ''} alt={unit.image?.caption || ''} className="w-full h-full" />
                                                     )}
                                                 </ImageReveal>
                                             </div>
@@ -635,66 +892,69 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                              {project.caseStudy.method.blocks.map((block, bIdx) => (
                                 <div key={bIdx} className={`bg-white ${bIdx !== (project.caseStudy.method.blocks?.length ?? 0) - 1 ? 'border-b border-black/10' : ''}`}>
                                      {(block.title || block.content) && (
-                                         <div className={`${project.id === '3' ? 'p-6 md:px-12 md:py-6' : 'p-8 md:p-12 md:pb-8'}`}>
+                                         <div className="p-[1.5em] md:p-[2.5em]">
                                              <ScrollReveal>
-                                                 {bIdx === 0 && <span className="text-swiss-red font-mono text-xs font-bold uppercase tracking-widest mb-4 block">02. THE APPROACH</span>}
-                                                 {block.title && <h3 className="text-3xl md:text-5xl font-black tracking-tighter mb-6 leading-[0.9]">{block.title}</h3>}
-                                                 {block.content && <p className={`text-base md:text-lg leading-relaxed text-neutral-600 max-w-5xl ${project.id === '3' ? 'mb-12' : 'mb-12'}`}>{block.content}</p>}
+                                                 <div className="max-w-5xl">
+                                                     {bIdx === 0 && <span className="text-swiss-red font-mono text-xs font-bold uppercase tracking-widest mb-[1em] block">02. THE APPROACH</span>}
+                                                     {block.title && <h3 className="text-3xl md:text-5xl font-black tracking-tighter mb-[0.4em] leading-[0.9]">{block.title}</h3>}
+                                                     {block.content && (
+                                                         <div>
+                                                             {block.content.split(/\n\s*\n/).filter(p => p.trim()).map((paragraph, pIdx) => (
+                                                                 <p key={pIdx} className={`text-base md:text-lg leading-relaxed text-neutral-600 ${pIdx > 0 ? 'mt-[0.5em]' : ''}`}>
+                                                                     {paragraph.trim().split('\n').join(' ')}
+                                                                 </p>
+                                                             ))}
+                                                         </div>
+                                                     )}
+                                                 </div>
                                              </ScrollReveal>
                                          </div>
                                      )}
                                      {/* Block Layout Logic: Grid (2 cols) vs Vertical (1 col) */}
-                                     <div className={`grid gap-px bg-black/10 ${block.layout === 'grid' ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
-                                         {block.images.map((img, iIdx) => (
-                                            <div key={iIdx} className="bg-white">
-                                                {/* CONDITIONAL RENDERING BASED ON LAYOUT */}
-                                                
-                                                {/* GRID LAYOUT: Image First, Caption Second (Technical) */}
-                                                {block.layout === 'grid' && (
-                                                    <>
-                                                        <ImageReveal className={`w-full overflow-hidden border-b border-black/10
-                                                            ${project.id === '3' ? 'aspect-[7/9]' : 'aspect-[4/3]'}
-                                                        `}>
-                                                            <img src={img.url} alt={img.caption} className="w-full h-full object-cover block" />
-                                                        </ImageReveal>
-                                                        {img.caption && (
-                                                            <div className="p-6">
-                                                                <p className="text-xs font-mono leading-relaxed text-neutral-500 border-l-2 border-swiss-red pl-3 mb-0">{img.caption}</p>
+                                     {block.layout === 'grid' ? (
+                                         <div className="grid gap-px bg-black/10 grid-cols-1 md:grid-cols-2">
+                                             {block.images.map((img, iIdx) => (
+                                                <div key={iIdx} className="bg-white">
+                                                    <ImageReveal className="w-full overflow-hidden border-b border-black/10">
+                                                        <div className="w-full relative">
+                                                            <LazyImage src={img.url} alt={img.caption} className="w-full h-auto object-contain" />
+                                                        </div>
+                                                    </ImageReveal>
+                                                    {img.caption && (
+                                                        <div className="py-[0.75em] px-[1em]">
+                                                            <p className="text-sm md:text-base font-mono leading-relaxed text-neutral-500 border-l-2 border-swiss-red pl-[0.75em] mb-0">{img.caption}</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                             ))}
+                                         </div>
+                                     ) : (
+                                         /* VERTICAL LAYOUT: Match subsections structure - no grid, direct flex-col */
+                                         <div className="border-t border-black/10">
+                                             {block.images.map((img, iIdx) => (
+                                                <div key={iIdx} className="bg-white border-b border-black/10 last:border-b-0">
+                                                    {img.caption && (
+                                                        <div className="p-[1.5em] md:px-[2.5em] pb-[1em]">
+                                                            <ScrollReveal>
+                                                                <p className="text-base md:text-lg leading-relaxed text-neutral-600 max-w-5xl">{img.caption}</p>
+                                                            </ScrollReveal>
+                                                        </div>
+                                                    )}
+                                                    <ImageReveal className="w-full overflow-hidden">
+                                                        {img.type === 'video' ? (
+                                                            <div className="w-full relative">
+                                                                <AutoPlayVideo src={img.url} className="w-full h-auto object-contain" />
+                                                            </div>
+                                                        ) : (
+                                                            <div className="w-full relative">
+                                                                <LazyImage src={img.url} alt={img.caption} className="w-full h-auto object-contain" />
                                                             </div>
                                                         )}
-                                                    </>
-                                                )}
-
-                                                {/* VERTICAL LAYOUT: Caption First (Body), Image Second */}
-                                                {block.layout === 'vertical' && (
-                                                    <>
-                                                        {img.caption && (
-                                                            <div className={`md:px-12 ${project.id === '3' ? 'p-6 pt-6 pb-1' : 'p-8 md:pb-6'}`}>
-                                                                <ScrollReveal>
-                                                                    <p className="text-base md:text-lg leading-relaxed text-neutral-600 max-w-5xl">{img.caption}</p>
-                                                                </ScrollReveal>
-                                                            </div>
-                                                        )}
-                                                        {/* 
-                                                            PROJECT 3 VERTICAL FIX: 
-                                                            No forced aspect-ratio here.
-                                                            Image uses h-auto to be full natural height.
-                                                            ImageReveal has NO className (gets w-full by default) to avoid forced h-full.
-                                                        */}
-                                                        <ImageReveal className={`w-full overflow-hidden border-b border-black/10 last:border-b-0
-                                                            ${project.id === '3' ? '' : 'aspect-[4/3]'}
-                                                        `}>
-                                                            {img.type === 'video' ? (
-                                                                <AutoPlayVideo src={img.url} className={`w-full block origin-center ${project.id === '3' ? 'h-auto' : 'h-full object-cover'}`} />
-                                                            ) : (
-                                                                <img src={img.url} alt={img.caption} className={`w-full block origin-center ${project.id === '3' ? 'h-auto' : 'h-full object-cover'}`} />
-                                                            )}
-                                                        </ImageReveal>
-                                                    </>
-                                                )}
-                                            </div>
-                                         ))}
-                                     </div>
+                                                    </ImageReveal>
+                                                </div>
+                                             ))}
+                                         </div>
+                                     )}
                                 </div>
                              ))}
                         </div>
@@ -705,42 +965,41 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                                  {project.caseStudy.method.images.map((img, idx) => (
                                     <div key={idx} className="w-full bg-white">
                                         {img.caption && (
-                                            <div className="p-8 md:px-12 md:pb-6">
+                                            <div className="p-[1.5em] md:px-[2.5em] pb-[1em]">
                                                 <ScrollReveal>
                                                     <p className="text-base md:text-lg leading-relaxed text-neutral-600 max-w-5xl">{img.caption}</p>
                                                 </ScrollReveal>
                                             </div>
                                         )}
-                                        <ImageReveal className="w-full overflow-hidden">
-                                            <img src={img.url} alt={img.caption || `Approach step ${idx + 1}`} className="w-full h-auto object-cover block origin-center" />
+                                        <ImageReveal className="w-full aspect-video overflow-hidden">
+                                            <LazyImage src={img.url} alt={img.caption || `Approach step ${idx + 1}`} className="w-full h-full" />
                                         </ImageReveal>
                                     </div>
                                  ))}
                             </div>
                         ) : (
                              <ImageReveal className="w-full aspect-video md:aspect-[21/9] border-t border-black/10 overflow-hidden">
-                                <img src={project.caseStudy.method.image} alt="Approach" className="w-full h-full object-cover block" />
+                                <LazyImage src={project.caseStudy.method.image} alt="Approach" className="w-full h-full" />
                             </ImageReveal>
                         )
                     )}
                 </div>
 
                  <div id="outcome" className="border-b border-black/10">
-                    <div className="p-8 md:p-12 md:pb-12 max-w-5xl">
+                    <div className="p-[1.5em] md:p-[2.5em] max-w-5xl">
                         <ScrollReveal>
-                            <span className="text-swiss-red font-mono text-xs font-bold uppercase tracking-widest mb-4 block">03. THE OUTCOME</span>
+                            <span className="text-swiss-red font-mono text-xs font-bold uppercase tracking-widest mb-[0.75em] block">03. THE OUTCOME</span>
                         </ScrollReveal>
                     </div>
-                    
                     {project.impact && (
                         <div className={`border-t border-black/10 grid ${outcomeGridClass} divide-y md:divide-y-0 md:divide-x divide-black/10`}>
                             {project.impact.map((item, idx) => (
-                                <div key={idx} className="p-8 md:p-12">
+                                <div key={idx} className="p-5 md:p-8">
                                     <ScrollReveal delay={idx * 100}>
-                                        <span className="block text-4xl md:text-6xl font-black text-swiss-red tracking-tighter leading-none mb-4 break-words">{item.value}</span>
-                                        <p className="text-sm md:text-base font-bold leading-tight text-black mb-2">{item.label}</p>
+                                        <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-swiss-red tracking-tighter leading-none mb-3 whitespace-nowrap">{item.value}</span>
+                                        <p className="text-sm md:text-base font-bold leading-tight text-black mb-1">{item.label}</p>
                                         {item.description && (
-                                            <p className="text-xs md:text-sm font-normal leading-relaxed text-neutral-500">{item.description}</p>
+                                            <p className="text-sm md:text-base font-normal leading-relaxed text-neutral-500">{item.description}</p>
                                         )}
                                     </ScrollReveal>
                                 </div>
@@ -751,7 +1010,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
 
                  {hasReflection && (
                     <div id="reflection" className="bg-neutral-50">
-                        <div className="p-8 md:px-12 md:pt-16 md:pb-8 max-w-5xl">
+                        <div className="p-[1.5em] md:p-[2.5em] max-w-5xl">
                             <ScrollReveal>
                                 <span className="text-swiss-red font-mono text-xs font-bold uppercase tracking-widest block">04. REFLECTION</span>
                             </ScrollReveal>
@@ -759,9 +1018,9 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                         {project.caseStudy.reflection.items && (
                             <div className="border-t border-black/10 flex flex-col divide-y divide-black/10">
                                 {project.caseStudy.reflection.items.map((item, idx) => (
-                                    <div key={idx} className="p-8 md:px-12 md:py-12">
+                                    <div key={idx} className="p-[1.5em] md:px-[2.5em] md:py-[2em]">
                                         <ScrollReveal delay={idx * 150}>
-                                            <h4 className="text-xl md:text-2xl font-black tracking-tight mb-3 text-black">{item.title}</h4>
+                                            <h4 className="text-xl md:text-2xl font-black tracking-tight mb-[0.5em] text-black">{item.title}</h4>
                                             <p className="text-base md:text-lg font-medium leading-relaxed text-neutral-600 max-w-5xl">{item.description}</p>
                                         </ScrollReveal>
                                     </div>
@@ -793,11 +1052,12 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
               </div>
               
               <div className="relative w-full aspect-[4/3] overflow-hidden bg-neutral-900">
-                  <img src={nextProject.imageUrl} alt="Next" className="absolute inset-0 w-full h-full object-cover z-10 transition-all duration-700 grayscale group-hover:opacity-0" />
+                  <LazyImage src={nextProject.imageUrl} alt="Next" className="absolute inset-0 w-full h-full z-10 transition-all duration-700 grayscale group-hover:opacity-0" />
                   {nextProject.videoUrl && (
                      <video 
                         ref={nextVideoRef}
-                        src={nextProject.videoUrl} 
+                        src={nextProject.videoUrl}
+                        preload="none"
                         muted
                         playsInline
                         className="absolute inset-0 w-full h-full object-cover z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"

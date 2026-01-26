@@ -33,7 +33,7 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
             className="text-sm md:text-base font-bold tracking-tighter cursor-pointer hover:text-swiss-red transition-colors select-none"
             onClick={() => handleNavigation('home')}
           >
-            MIAO LIU ©25
+            MIAO LIU ©26
           </h1>
         </div>
         

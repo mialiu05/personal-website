@@ -266,7 +266,7 @@ export const Contact: React.FC = () => {
       {/* BOTTOM BAR: Copyright & Location */}
       <div className="relative z-10 border-t border-white/20 p-3 md:px-6 flex flex-col md:flex-row justify-between items-center gap-2 bg-black/20 backdrop-blur-md shrink-0">
          <p className="text-[10px] font-mono text-neutral-500 uppercase">
-             © 2025 MIAO LIU. POWERED BY GEMINI 3 PRO.
+             © 2026 MIAO LIU. POWERED BY GEMINI 3 PRO.
          </p>
          <div className="flex items-center gap-4 text-[10px] font-mono text-neutral-500 uppercase">
             <span>Leipzig, DE</span>

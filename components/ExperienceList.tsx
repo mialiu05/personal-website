@@ -61,7 +61,7 @@ export const ExperienceList: React.FC = () => {
                         {/* Level 6: Subtitle Style */}
                         <h4 className="text-xs md:text-sm font-bold tracking-widest mb-6 text-neutral-500">{job.company}</h4>
                         {/* Level 5: Body */}
-                        <p className="text-base md:text-lg leading-relaxed max-w-2xl font-normal text-neutral-700">
+                        <p className="text-base md:text-lg leading-relaxed max-w-5xl font-normal text-neutral-700">
                             {job.description}
                         </p>
                     </div>
