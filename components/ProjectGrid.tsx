@@ -20,14 +20,14 @@ const LazyImage: React.FC<{
     const container = containerRef.current;
     if (!container) return;
 
-    // Start loading images before they enter viewport (200px ahead)
+    // Start loading images before they enter viewport (400px ahead for better performance)
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true);
         }
       },
-      { threshold: 0.01, rootMargin: '200px' }
+      { threshold: 0.01, rootMargin: '400px' }
     );
 
     observer.observe(container);
@@ -148,7 +148,7 @@ export const ProjectGrid: React.FC<ProjectGridProps> = ({ onProjectClick, id }) 
                 className={`z-10 transition-all duration-700 grayscale ${!project.comingSoon ? 'group-hover:opacity-0' : ''}`}
               />
               
-              {/* Video: preload=none — loads only on hover/play */}
+              {/* Video: preload=metadata for first 2 projects (above fold), none for others */}
               {!project.comingSoon && project.videoUrl && (
                  <video
                     ref={el => { 
@@ -158,7 +158,7 @@ export const ProjectGrid: React.FC<ProjectGridProps> = ({ onProjectClick, id }) 
                     src={project.videoUrl}
                     muted
                     playsInline
-                    preload="none"
+                    preload={index < 2 ? "metadata" : "none"}
                     className="absolute inset-0 w-full h-full object-cover z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                  />
               )}

@@ -4,6 +4,7 @@ import { Project } from '../types';
 import { ArrowRight, ExternalLink, ArrowUpRight, List } from 'lucide-react';
 import { PROJECTS } from '../constants';
 import { Contact } from './Contact';
+import { preloadProjectDetailResources } from '../utils/resourcePreloader';
 
 interface ProjectDetailProps {
   project: Project;
@@ -27,14 +28,14 @@ const AutoPlayVideo: React.FC<{ src: string; className?: string; poster?: string
     const container = containerRef.current;
     if (!container) return;
 
-    // Increased rootMargin to start loading video metadata earlier (500px ahead) for smoother experience
+    // Increased rootMargin to 800px to start loading video metadata earlier for smoother experience
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true);
         }
       },
-      { threshold: 0.01, rootMargin: '500px' }
+      { threshold: 0.01, rootMargin: '800px' }
     );
 
     observer.observe(container);
@@ -198,14 +199,14 @@ const LazyImage: React.FC<{
     const container = containerRef.current;
     if (!container) return;
 
-    // Increased rootMargin to start loading earlier (500px ahead) for smoother experience
+    // Increased rootMargin to 1000px to start loading much earlier for smoother experience
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true);
         }
       },
-      { threshold: 0.01, rootMargin: '500px' }
+      { threshold: 0.01, rootMargin: '1000px' }
     );
 
     observer.observe(container);
@@ -384,6 +385,46 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
   const hasReflection = project.caseStudy.reflection?.items && project.caseStudy.reflection.items.length > 0;
   const sections = ['Challenge', 'Approach', 'Outcome'];
   if (hasReflection) sections.push('Reflection');
+
+  // Preload first-screen resources when component mounts
+  useEffect(() => {
+    // Collect all image URLs from the project
+    const imageUrls: string[] = [];
+    
+    // Add project cover image
+    if (project.imageUrl) imageUrls.push(project.imageUrl);
+    
+    // Add problem section images
+    if (project.caseStudy.problem.images) {
+      project.caseStudy.problem.images.forEach(img => {
+        if (img.url) imageUrls.push(img.url);
+      });
+    } else if (project.caseStudy.problem.image) {
+      imageUrls.push(project.caseStudy.problem.image);
+    }
+    
+    // Add approach section images (first few)
+    if (project.caseStudy.method.subsections) {
+      project.caseStudy.method.subsections.slice(0, 2).forEach(sub => {
+        sub.units?.forEach(unit => {
+          if (unit.image?.url) imageUrls.push(unit.image.url);
+        });
+      });
+    } else if (project.caseStudy.method.blocks) {
+      project.caseStudy.method.blocks.slice(0, 2).forEach(block => {
+        block.images?.slice(0, 3).forEach(img => {
+          if (img.url) imageUrls.push(img.url);
+        });
+      });
+    }
+    
+    // Collect video URLs
+    const videoUrls: string[] = [];
+    if (project.videoUrl) videoUrls.push(project.videoUrl);
+    
+    // Preload first-screen resources
+    preloadProjectDetailResources(imageUrls, videoUrls);
+  }, [project]);
 
   useEffect(() => {
     const handleScroll = () => {
