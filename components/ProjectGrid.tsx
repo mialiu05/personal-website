@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { PROJECTS } from '../constants';
 import { ArrowUpRight } from 'lucide-react';
 
@@ -15,7 +15,7 @@ const LazyImage: React.FC<{
   const imgRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (loading === 'eager') return;
     const container = containerRef.current;
     if (!container) return;
@@ -41,7 +41,7 @@ const LazyImage: React.FC<{
   return (
     <div ref={containerRef} className={`absolute inset-0 ${className}`}>
       {/* Placeholder - Skeleton */}
-      <div 
+      <div
         className={`absolute inset-0 bg-neutral-200 transition-opacity duration-500 ${
           isLoaded ? 'opacity-0' : 'opacity-100'
         }`}
@@ -51,7 +51,7 @@ const LazyImage: React.FC<{
           animation: isLoaded ? 'none' : 'shimmer 1.5s infinite',
         }}
       />
-      
+
       {/* Actual Image */}
       {isInView && (
         <img
@@ -66,7 +66,7 @@ const LazyImage: React.FC<{
           }`}
         />
       )}
-      
+
       <style>{`
         @keyframes shimmer {
           0% { background-position: -200% 0; }
@@ -79,11 +79,10 @@ const LazyImage: React.FC<{
 
 interface ProjectGridProps {
   onProjectClick?: (projectId: string) => void;
-  id?: string;
 }
 
-export const ProjectGrid: React.FC<ProjectGridProps> = ({ onProjectClick, id }) => {
-  
+export const ProjectGrid: React.FC<ProjectGridProps> = ({ onProjectClick }) => {
+
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
   const timeoutRefs = useRef<{ [key: string]: ReturnType<typeof setTimeout> }>({});
 
@@ -102,7 +101,6 @@ export const ProjectGrid: React.FC<ProjectGridProps> = ({ onProjectClick, id }) 
 
   const handleMouseLeave = (projectId: string) => {
     // Delay the pause/reset logic to allow the CSS fade-out transition to complete visually
-    // This prevents the video from jumping to frame 0 while still visible during the fade
     timeoutRefs.current[projectId] = setTimeout(() => {
         const video = videoRefs.current[projectId];
         if (video) {
@@ -113,52 +111,38 @@ export const ProjectGrid: React.FC<ProjectGridProps> = ({ onProjectClick, id }) 
   };
 
   return (
-    <section className="min-h-screen bg-white border-b border-black">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-b border-black">
-        <div className="p-8 md:p-12 border-b md:border-b-0 md:border-r border-black bg-black text-white flex items-center justify-center">
-          {/* Level 2: Section Header */}
-          <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase text-center leading-none">
-            Selected<br />Works<br /><span className="text-swiss-red">2019-26</span>
-          </h2>
-        </div>
-        <div className="p-8 md:p-12 col-span-1 lg:col-span-2 flex items-center">
-           {/* Level 4: Lead Text */}
-           <p className="text-lg md:text-2xl leading-tight font-light text-neutral-800">
-             Bridging design innovation and strategic thinking to build the next generation of digital products.
-           </p>
-        </div>
-      </div>
-
-      <div id={id} className="grid grid-cols-1 md:grid-cols-2 scroll-mt-16">
+    <section className="min-h-screen bg-white py-16 px-6 md:px-12">
+      {/* Projects Grid with enhanced spacing and borders - Fixed to 2 columns for balanced layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-[1400px] mx-auto">
         {PROJECTS.map((project, index) => (
-          <button 
-            key={project.id} 
+          <button
+            key={project.id}
             onClick={() => !project.comingSoon && onProjectClick && onProjectClick(project.id)}
             onMouseEnter={() => !project.comingSoon && handleMouseEnter(project.id)}
             onMouseLeave={() => !project.comingSoon && handleMouseLeave(project.id)}
             disabled={project.comingSoon}
-            className={`text-left group relative border-b border-black ${index % 2 === 0 ? 'md:border-r' : ''} overflow-hidden w-full focus:outline-none focus:ring-2 focus:ring-swiss-red/50 ${project.comingSoon ? 'cursor-default' : 'cursor-pointer'}`}
+            className={`text-left group relative border border-black md:border-2 overflow-hidden w-full focus:outline-none focus:ring-2 focus:ring-swiss-red/50 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all duration-300 bg-white ${project.comingSoon ? 'cursor-default' : 'cursor-pointer'}`}
           >
             <div className="aspect-[4/3] overflow-hidden relative bg-neutral-100">
               {/* Static Image (Top Layer) - Lazy load below-fold; priority for first */}
-              <LazyImage 
-                src={project.imageUrl} 
+              <LazyImage
+                src={project.imageUrl}
                 alt={project.title}
-                loading={index < 2 ? 'eager' : 'lazy'}
-                className={`z-10 transition-all duration-700 grayscale ${!project.comingSoon ? 'group-hover:opacity-0' : ''}`}
+                loading={index < 3 ? 'eager' : 'lazy'}
+                className={`w-full h-full object-cover z-10 transition-all duration-700 grayscale ${!project.comingSoon ? 'group-hover:opacity-0' : ''}`}
               />
-              
-              {/* Video: preload=metadata for first 2 projects (above fold), none for others */}
+
+              {/* Video: preload=metadata for first 3 projects (above fold), none for others */}
               {!project.comingSoon && project.videoUrl && (
                  <video
-                    ref={el => { 
-                        if (el) videoRefs.current[project.id] = el; 
+                    ref={el => {
+                        if (el) videoRefs.current[project.id] = el;
                         else delete videoRefs.current[project.id];
                     }}
                     src={project.videoUrl}
                     muted
                     playsInline
-                    preload={index < 2 ? "metadata" : "none"}
+                    preload={index < 3 ? "metadata" : "none"}
                     className="absolute inset-0 w-full h-full object-cover z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                  />
               )}
@@ -168,7 +152,7 @@ export const ProjectGrid: React.FC<ProjectGridProps> = ({ onProjectClick, id }) 
                   {project.comingSoon ? (
                       // Coming Soon Badge
                       <div className="bg-black text-white border border-black rounded-full px-6 py-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
-                         <span className="text-sm font-bold uppercase tracking-widest">Coming Soon</span>
+                         <span className="text-sm font-bold tracking-widest">Coming Soon</span>
                       </div>
                   ) : (
                       // Interaction Arrow
@@ -178,26 +162,26 @@ export const ProjectGrid: React.FC<ProjectGridProps> = ({ onProjectClick, id }) 
                   )}
               </div>
             </div>
-            
-            <div className="p-6 md:p-8 bg-white relative z-30 flex flex-col h-full border-t border-black/10">
-               {/* Header Row: Tags (Level 6) */}
-               <div className="flex flex-wrap gap-3 items-center mb-5">
+
+            <div className="p-6 md:p-8 lg:p-10 bg-white relative z-30 flex flex-col h-full">
+               {/* Title (Level 3) - Enhanced with stronger weight */}
+               <h3 className={`text-2xl md:text-3xl lg:text-4xl font-black tracking-tighter mb-3 md:mb-4 transition-transform duration-300 ${!project.comingSoon ? 'group-hover:translate-x-2' : ''}`}>
+                 {project.title}
+               </h3>
+
+               {/* Body (Level 5) - Lighter for better hierarchy */}
+               <p className="text-neutral-500 leading-relaxed text-base md:text-lg lg:text-xl max-w-5xl font-normal mb-4">
+                 {project.description}
+               </p>
+
+               {/* Tags (Level 6) */}
+               <div className="flex flex-wrap gap-3 items-center">
                   {project.tags.slice(0, 3).map(tag => (
-                    <span key={tag} className="border border-black px-2 py-1 text-[10px] font-bold tracking-widest bg-white">
+                    <span key={tag} className="border-2 border-black px-3 py-1.5 text-[10px] md:text-xs font-bold tracking-widest bg-white">
                       {tag}
                     </span>
                   ))}
                </div>
-               
-               {/* Title (Level 3) */}
-               <h3 className={`text-2xl md:text-3xl font-black tracking-tighter mb-4 transition-transform duration-300 ${!project.comingSoon ? 'group-hover:translate-x-2' : ''}`}>
-                 {project.title}
-               </h3>
-               
-               {/* Body (Level 5) */}
-               <p className="text-neutral-600 leading-relaxed text-base md:text-lg max-w-5xl font-normal">
-                 {project.description}
-               </p>
             </div>
           </button>
         ))}

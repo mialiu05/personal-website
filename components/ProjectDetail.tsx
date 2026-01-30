@@ -780,7 +780,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                 </ScrollReveal>
                 <div className="flex flex-wrap gap-3 mt-2 pointer-events-auto">
                     {project.tags.slice(0, 3).map(tag => (
-                        <span key={tag} className="border border-black px-3 py-1 text-[10px] md:text-xs font-bold tracking-widest bg-white/50 transition-colors cursor-default">{tag}</span>
+                        <span key={tag} className="border border-black px-3 py-1 text-[10px] md:text-xs lg:text-sm font-bold tracking-widest bg-white/50 transition-colors cursor-default">{tag}</span>
                     ))}
                 </div>
             </div>
@@ -812,19 +812,19 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                 <div className="mt-auto">
                     <div className="border-t border-black pt-6 mb-6">
                          <div className="mb-6">
-                            <span className="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-1">Contribution</span>
-                            <span className="text-sm md:text-base font-bold block leading-relaxed">{project.role}</span>
+                            <span className="block text-[10px] md:text-xs lg:text-sm font-bold uppercase tracking-widest text-neutral-400 mb-1">Contribution</span>
+                            <span className="text-sm md:text-base lg:text-lg font-bold block leading-relaxed">{project.role}</span>
                          </div>
                          <div className="grid grid-cols-2 gap-y-6 gap-x-4">
                             {metaDetails.map((item) => (
                                 <div key={item.label}>
-                                    <span className="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-1">{item.label}</span>
+                                    <span className="block text-[10px] md:text-xs lg:text-sm font-bold uppercase tracking-widest text-neutral-400 mb-1">{item.label}</span>
                                     {item.isLink ? (
-                                        <a href={normalizeWebsiteUrl(item.value)} target="_blank" rel="noreferrer" className="text-sm md:text-base font-bold flex items-center gap-2 hover:text-swiss-red transition-colors break-words">
+                                        <a href={normalizeWebsiteUrl(item.value)} target="_blank" rel="noreferrer" className="text-sm md:text-base lg:text-lg font-bold flex items-center gap-2 hover:text-swiss-red transition-colors break-words">
                                             <span className="break-all">{item.value}</span> <ExternalLink size={12} className="flex-shrink-0" />
                                         </a>
                                     ) : (
-                                        <span className="text-sm md:text-base font-bold block break-words">{item.value}</span>
+                                        <span className="text-sm md:text-base lg:text-lg font-bold block break-words">{item.value}</span>
                                     )}
                                 </div>
                             ))}
@@ -852,27 +852,27 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
 
       <section id="case-study-wrapper" className="border-b border-black relative">
         <div className="grid grid-cols-1 lg:grid-cols-12">
-            <div className="hidden lg:block lg:col-span-3 border-r border-black">
+            <div className="hidden md:block md:col-span-4 lg:col-span-3 border-r border-black">
                 <div className="sticky top-24 p-8">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-4 block">Contents</span>
+                    <span className="text-[10px] md:text-xs lg:text-sm font-bold uppercase tracking-widest text-neutral-400 mb-4 block">Contents</span>
                     <div>{renderTocItems(false)}</div>
                 </div>
             </div>
 
-            <div className="col-span-1 lg:col-span-9 bg-white">
+            <div className="col-span-1 md:col-span-8 lg:col-span-9 bg-white">
                 <div id="challenge" className="border-b border-black/10">
                      <div className="p-[1.5em] md:p-[2.5em] max-w-5xl">
                         <ScrollReveal>
                             <span className="text-swiss-red font-mono text-xs font-bold uppercase tracking-widest mb-[0.75em] block">01. THE CHALLENGE</span>
-                            <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-[0.4em] leading-[0.9]">{project.caseStudy.problem.title}</h2>
-                            <p className="text-base md:text-lg leading-relaxed text-neutral-600 max-w-5xl">{project.caseStudy.problem.content}</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tighter mb-[0.4em] leading-[0.9]">{project.caseStudy.problem.title}</h2>
+                            <p className="text-base md:text-lg lg:text-xl leading-relaxed text-neutral-600 max-w-5xl">{project.caseStudy.problem.content}</p>
                         </ScrollReveal>
                      </div>
                      {project.caseStudy.problem.images && (
-                        <div className="border-t border-black/10 grid grid-cols-1 md:grid-cols-2 gap-px bg-black/10">
+                        <div className="border-t border-black/10 grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-px bg-black/10">
                             {project.caseStudy.problem.images.map((img, idx) => (
                                 <div key={idx} className="bg-white flex flex-col h-full">
-                                    <ImageReveal className={`${project.id === '3' ? 'aspect-[7/9]' : 'aspect-[4/3]'} overflow-hidden border-b border-black/10 flex-shrink-0`}>
+                                    <ImageReveal className={`${project.id === '3' ? 'aspect-[7/9]' : 'aspect-[4/3]'} overflow-hidden border-b border-black/20 md:border-black/10 flex-shrink-0`}>
                                         <LazyImage src={img.url} alt={img.caption} className="w-full h-full" />
                                     </ImageReveal>
                                     <div className="py-[0.75em] px-[1em] flex-1">
@@ -894,8 +894,8 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                         <div className="p-[1.5em] md:p-[2.5em] max-w-5xl">
                             <ScrollReveal>
                                 <span className="text-swiss-red font-mono text-xs font-bold uppercase tracking-widest mb-[0.75em] block">02. THE APPROACH</span>
-                                <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-[0.4em] leading-[0.9]">{project.caseStudy.method.title}</h2>
-                                <p className="text-base md:text-lg leading-relaxed text-neutral-600 max-w-5xl">{project.caseStudy.method.content}</p>
+                                <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tighter mb-[0.4em] leading-[0.9]">{project.caseStudy.method.title}</h2>
+                                <p className="text-base md:text-lg lg:text-xl leading-relaxed text-neutral-600 max-w-5xl">{project.caseStudy.method.content}</p>
                             </ScrollReveal>
                         </div>
                     ) : null}
@@ -907,9 +907,9 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                                     {/* 标题区域 */}
                                     <div className="p-[1.5em] md:p-[2.5em]">
                                         <ScrollReveal>
-                                            {sIdx === 0 && <span className="text-swiss-red font-mono text-xs font-bold uppercase tracking-widest mb-[1em] block">02. THE APPROACH</span>}
-                                            <h3 className="text-3xl md:text-5xl font-black tracking-tighter mb-[0.4em] leading-[0.9]">{sub.title}</h3>
-                                            <p className="text-base md:text-lg leading-relaxed text-neutral-600 max-w-5xl">{sub.content}</p>
+                                            {sIdx === 0 && <span className="text-swiss-red font-mono text-xs md:text-sm font-bold uppercase tracking-widest mb-[1em] block">02. THE APPROACH</span>}
+                                            <h3 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tighter mb-[0.4em] leading-[0.9]">{sub.title}</h3>
+                                            <p className="text-base md:text-lg lg:text-xl leading-relaxed text-neutral-600 max-w-5xl">{sub.content}</p>
                                         </ScrollReveal>
                                     </div>
 
@@ -922,13 +922,13 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                                                     <div className="p-[1.5em] md:px-[2.5em] pb-[0.5em]">
                                                         <ScrollReveal>
                                                             {unit.title && (
-                                                                <h4 className="text-xl md:text-2xl font-bold mb-[0.5em] tracking-tight">{unit.title}</h4>
+                                                                <h4 className="text-xl md:text-2xl lg:text-3xl font-bold mb-[0.5em] tracking-tight">{unit.title}</h4>
                                                             )}
-                                                            <p className="text-base md:text-lg leading-relaxed text-neutral-600 max-w-5xl">{unit.content}</p>
+                                                            <p className="text-base md:text-lg lg:text-xl leading-relaxed text-neutral-600 max-w-5xl">{unit.content}</p>
                                                         </ScrollReveal>
                                                     </div>
                                                 )}
-                                                <ImageReveal className="w-full overflow-hidden">
+                                                <ImageReveal className="w-full overflow-hidden mb-6 md:mb-8">
                                                     {unit.image?.type === 'video' ? (
                                                         <AutoPlayVideo src={unit.image.url} className="w-full h-auto object-contain" />
                                                     ) : (
@@ -950,12 +950,12 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                                          <div className="p-[1.5em] md:p-[2.5em]">
                                              <ScrollReveal>
                                                  <div className="max-w-5xl">
-                                                     {bIdx === 0 && <span className="text-swiss-red font-mono text-xs font-bold uppercase tracking-widest mb-[1em] block">02. THE APPROACH</span>}
-                                                     {block.title && <h3 className="text-3xl md:text-5xl font-black tracking-tighter mb-[0.4em] leading-[0.9]">{block.title}</h3>}
+                                                     {bIdx === 0 && <span className="text-swiss-red font-mono text-xs md:text-sm font-bold uppercase tracking-widest mb-[1em] block">02. THE APPROACH</span>}
+                                                     {block.title && <h3 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tighter mb-[0.4em] leading-[0.9]">{block.title}</h3>}
                                                      {block.content && (
                                                          <div>
                                                              {block.content.split(/\n\s*\n/).filter(p => p.trim()).map((paragraph, pIdx) => (
-                                                                 <p key={pIdx} className={`text-base md:text-lg leading-relaxed text-neutral-600 ${pIdx > 0 ? 'mt-[0.5em]' : ''}`}>
+                                                                 <p key={pIdx} className={`text-base md:text-lg lg:text-xl leading-relaxed text-neutral-600 ${pIdx > 0 ? 'mt-[0.5em]' : ''}`}>
                                                                      {paragraph.trim().split('\n').join(' ')}
                                                                  </p>
                                                              ))}
@@ -967,17 +967,17 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                                      )}
                                      {/* Block Layout Logic: Grid (2 cols) vs Vertical (1 col) */}
                                      {block.layout === 'grid' ? (
-                                         <div className="grid gap-px bg-black/10 grid-cols-1 md:grid-cols-2">
+                                         <div className="grid gap-2 md:gap-px bg-black/10 grid-cols-1 md:grid-cols-2">
                                              {block.images.map((img, iIdx) => (
                                                 <div key={iIdx} className="bg-white">
-                                                    <ImageReveal className="w-full overflow-hidden border-b border-black/10">
+                                                    <ImageReveal className="w-full overflow-hidden border-b border-black/20 md:border-black/10">
                                                         <div className="w-full relative">
                                                             <LazyImage src={img.url} alt={img.caption} className="w-full h-auto object-contain" />
                                                         </div>
                                                     </ImageReveal>
                                                     {img.caption && (
                                                         <div className="py-[0.75em] px-[1em]">
-                                                            <p className="text-sm md:text-base font-mono leading-relaxed text-neutral-500 border-l-2 border-swiss-red pl-[0.75em] mb-0">{img.caption}</p>
+                                                            <p className="text-sm md:text-base lg:text-lg font-mono leading-relaxed text-neutral-500 border-l-2 border-swiss-red pl-[0.75em] mb-0">{img.caption}</p>
                                                         </div>
                                                     )}
                                                 </div>
@@ -985,17 +985,17 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                                          </div>
                                      ) : (
                                          /* VERTICAL LAYOUT: Match subsections structure - no grid, direct flex-col */
-                                         <div className="border-t border-black/10">
+                                         <div className="border-t border-black/10 space-y-6 md:space-y-8">
                                              {block.images.map((img, iIdx) => (
                                                 <div key={iIdx} className="bg-white border-b border-black/10 last:border-b-0">
                                                     {img.caption && (
                                                         <div className="p-[1.5em] md:px-[2.5em] pb-[1em]">
                                                             <ScrollReveal>
-                                                                <p className="text-base md:text-lg leading-relaxed text-neutral-600 max-w-5xl">{img.caption}</p>
+                                                                <p className="text-base md:text-lg lg:text-xl leading-relaxed text-neutral-600 max-w-5xl">{img.caption}</p>
                                                             </ScrollReveal>
                                                         </div>
                                                     )}
-                                                    <ImageReveal className="w-full overflow-hidden">
+                                                    <ImageReveal className="w-full overflow-hidden mb-6 md:mb-8">
                                                         {img.type === 'video' ? (
                                                             <div className="w-full relative">
                                                                 <AutoPlayVideo src={img.url} className="w-full h-auto object-contain" />

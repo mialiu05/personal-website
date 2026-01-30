@@ -45,13 +45,16 @@ export const SKILLS = {
   ],
   tools: [
     'Figma',
-    'Protopie',
-    'After Effects',
+    'Cursor',
+    'Claude',
+    'ProtoPie',
     'Cinema 4D',
     'React / Tailwind',
-    'Midjourney / ChatGPT',
+    'Midjourney',
+    'ChatGPT',
     'Python',
-    'GenAI Tools'
+    'Perplexity',
+    'NotebookLLM'
   ]
 };
 
@@ -64,7 +67,7 @@ export const PROJECTS: Project[] = [
     description: 'Redesigned GT30 gaming experience to activate system and hardware capabilities, driving 47,000+ paid conversions and 35.7% revenue growth.',
     imageUrl: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/Game%204%20Cover.png',
     videoUrl: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/Game%20Cover.mp4',
-    tags: ['Gamification', 'Monetization', 'Hardware-Software Integration'],
+    tags: ['Gamification', 'Monetization', 'Hardware'],
     role: 'UX & UI Design, Agile Leadership,Growth Strategy',
     duration: '4 months',
     website: 'https://www.infinixmobility.com/gt-30',
@@ -174,7 +177,7 @@ export const PROJECTS: Project[] = [
     description: 'Led UX and visual design for the system’s first AI writing assistant, growing DAU from 1.03 M to 2.79 M with strong user feedback.',
     imageUrl: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/2%20COVER.png',
     videoUrl: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/cover2%20.mp4',
-    tags: ['Design Lead', 'Visual Strategy', 'AI'],
+    tags: ['AI-Driven', 'Growth', 'Productivity'],
     role: 'UX & UI Design, Visual Strategy, AI Interaction Design, Design Leadership',
     duration: '5 Months',
     website: 'www.tecno-mobile.com/hios/home/',
@@ -306,7 +309,7 @@ export const PROJECTS: Project[] = [
     description: 'Redesigned the wallpaper customization flow and creative features, boosting setup success rate by 46% and user satisfaction by 3.7%.',
     imageUrl: 'https://i.postimg.cc/NF10byhh/A.png',
     videoUrl: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/Project%201.mp4',
-    tags: ['UX & UI', 'Multiple Patents', 'Cross-Team Collaboration'],
+    tags: ['Innovation', 'Engagement', 'Aesthetics'],
     role: 'UX & UI Design, Product Strategy, Cross-Team Collaboration(13 teams), Prototypes',
     duration: '8 Months',
     website: 'www.infinixmobility.com/xos/',
@@ -418,13 +421,13 @@ export const PROJECTS: Project[] = [
   },
   {
     id: '3',
-    title: 'Design Guidelines for Display Adaptation',
+    title: 'Adaptive Display System',
     category: 'Product Design',
     year: '2025',
     description: 'Established design guidelines to ensure consistent, high-quality experiences across entry-level hardware, driving a user satisfaction increase from 8.3 to 8.8.',
     imageUrl: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/e121fd7a72bc682f14b6033bb2ad7b2b3c73b784/cover%203.png',
     videoUrl: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/Video%20cover%203.mp4',
-    tags: ['UX Research', 'Visual Strategy', 'Design Guidelines'],
+    tags: ['Scalability', 'Standards', 'Adaptivity'],
     role: 'User Research Visual Strategy, Design Standards',
     duration: '2 months',
     website: 'www.mobile-phantom.com/phantom-v-flip/',
@@ -506,3 +509,69 @@ export const PROJECTS: Project[] = [
     }
   }
 ];
+
+// Design System Constants
+export const TYPOGRAPHY = {
+  h1: 'text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter',
+  h2: 'text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tighter',
+  h3: 'text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight',
+  h4: 'text-xl md:text-2xl lg:text-3xl font-bold tracking-tight',
+  h5: 'text-lg md:text-xl lg:text-2xl font-bold tracking-tight',
+  body: {
+    large: 'text-base md:text-lg lg:text-xl',
+    regular: 'text-sm md:text-base lg:text-lg',
+    small: 'text-xs md:text-sm lg:text-base',
+  },
+  label: {
+    large: 'text-xs md:text-sm font-bold tracking-widest uppercase',
+    regular: 'text-[10px] md:text-xs font-bold tracking-widest uppercase',
+    small: 'text-[8px] md:text-[10px] font-bold tracking-widest uppercase',
+  },
+  mono: 'font-mono text-xs md:text-sm',
+};
+
+export const SPACING = {
+  section: {
+    padding: 'p-6 md:p-8 lg:p-12 xl:p-16',
+    paddingX: 'px-6 md:px-8 lg:px-12 xl:px-16',
+    paddingY: 'py-12 md:py-16 lg:py-20 xl:py-24',
+    gap: 'gap-8 md:gap-12 lg:gap-16',
+  },
+  card: {
+    padding: 'p-6 md:p-8',
+    gap: 'gap-4 md:gap-6',
+  },
+  grid: {
+    dense: 'gap-4',
+    regular: 'gap-6 md:gap-8',
+    loose: 'gap-8 md:gap-12',
+  },
+  button: {
+    small: 'px-3 py-1.5',
+    medium: 'px-6 py-3',
+    large: 'px-8 py-4',
+  },
+  margin: {
+    element: 'mb-4 md:mb-6',
+    section: 'mb-8 md:mb-12',
+    large: 'mb-12 md:mb-16',
+  },
+};
+
+export const BORDERS = {
+  card: 'border-2 border-black',
+  cardResponsive: 'border border-black md:border-2',
+  divider: 'border-b border-black',
+  subtle: 'border border-black/10',
+};
+
+export const CONTAINERS = {
+  imageAspect: {
+    landscape: 'aspect-[4/3]',
+    portrait: 'aspect-[3/4]',
+    square: 'aspect-square',
+    tall: 'aspect-[7/9]',
+  },
+  overflow: 'overflow-hidden',
+  rounded: '', // Brutalist style - no rounding
+};

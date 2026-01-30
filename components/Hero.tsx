@@ -36,15 +36,19 @@ export const Hero: React.FC = () => {
       if (!canvas.parentElement) return;
       const rect = canvas.parentElement.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
-      
-      // Update size ref for the draw loop
-      sizeRef.current = { width: rect.width, height: rect.height };
 
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
+      // Add 1px to height to cover the border-b (1px border)
+      const width = rect.width;
+      const height = rect.height + 1;
+
+      // Update size ref for the draw loop
+      sizeRef.current = { width, height };
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
       ctx.scale(dpr, dpr);
-      canvas.style.width = `${rect.width}px`;
-      canvas.style.height = `${rect.height}px`;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
     };
 
     window.addEventListener('resize', resize);
@@ -223,9 +227,9 @@ export const Hero: React.FC = () => {
 
   return (
     <section className="h-[65vh] min-h-[600px] pt-16 flex flex-col border-b border-black relative overflow-hidden bg-white">
-      {/* Animated Topographic Background */}
-      <canvas 
-        ref={canvasRef} 
+      {/* Animated Topographic Background - fills entire section including border area */}
+      <canvas
+        ref={canvasRef}
         className="absolute inset-0 z-0"
       />
 
@@ -240,13 +244,13 @@ export const Hero: React.FC = () => {
 
         <div className="col-span-12 md:col-span-10 lg:col-span-9 flex flex-col justify-center z-20 pr-4 md:pr-12 h-full py-12">
            {/* Main Intro Statement - Sentence Case, Reduced spacing */}
-           <h1 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter leading-[1.2] mb-8 text-off-black pointer-events-auto mix-blend-hard-light max-w-5xl">
+           <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-5xl font-black tracking-tighter leading-[1.2] mb-8 text-off-black pointer-events-auto mix-blend-hard-light max-w-5xl">
              Miao Liu is a product designer specializing in <span className="text-swiss-red">AI-driven</span>, cross-cultural experiences grounded in design innovation, system thinking, and strategy.
            </h1>
-           
+
            {/* Secondary Info - Sentence Case, Adjusted tracking */}
            <div className="pointer-events-auto pl-6 border-l-2 border-black">
-             <p className="text-xs md:text-sm font-bold tracking-wide text-neutral-500">
+             <p className="text-xs md:text-sm lg:text-base font-bold tracking-wide text-neutral-500">
                Previously at{' '}
                <a 
                  href="https://www.oppo.com/en/" 

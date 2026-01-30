@@ -83,5 +83,3 @@ export interface ChatMessage {
   text: string;
   isLoading?: boolean;
 }
-
-export type ViewState = 'home' | 'work' | 'about' | 'contact';
