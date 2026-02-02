@@ -245,25 +245,25 @@ export const Hero: React.FC = () => {
         <div className="col-span-12 md:col-span-10 lg:col-span-9 flex flex-col justify-center z-20 pr-4 md:pr-12 h-full py-12">
            {/* Main Intro Statement - Sentence Case, Reduced spacing */}
            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-5xl font-black tracking-tighter leading-[1.2] mb-8 text-off-black pointer-events-auto mix-blend-hard-light max-w-5xl">
-             Miao Liu is a product designer specializing in <span className="text-swiss-red">AI-driven</span>, cross-cultural experiences grounded in design innovation, system thinking, and strategy.
+             Miao Liu is a product designer specializing in mobile-first, <span className="text-swiss-red">AI-led</span> experience design.
            </h1>
 
            {/* Secondary Info - Sentence Case, Adjusted tracking */}
            <div className="pointer-events-auto pl-6 border-l-2 border-black">
              <p className="text-xs md:text-sm lg:text-base font-bold tracking-wide text-neutral-500">
-               Previously at{' '}
-               <a 
-                 href="https://www.oppo.com/en/" 
-                 target="_blank" 
+               I turn complex, multi-team product challenges into scalable systems and high-leverage solutions. Previously at{' '}
+               <a
+                 href="https://www.oppo.com/en/"
+                 target="_blank"
                  rel="noopener noreferrer"
                  className="underline hover:text-swiss-red transition-colors"
                >
                  OPPO
                </a>
                {' '}and{' '}
-               <a 
-                 href="https://www.transsion.com" 
-                 target="_blank" 
+               <a
+                 href="https://www.transsion.com"
+                 target="_blank"
                  rel="noopener noreferrer"
                  className="underline hover:text-swiss-red transition-colors"
                >

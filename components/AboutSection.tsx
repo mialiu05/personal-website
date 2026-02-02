@@ -116,7 +116,7 @@ export const AboutSection: React.FC = () => {
             }`}
           >
             <a
-              href="https://raw.githubusercontent.com/mialiu05/portfolio-assets/27e2ad8b19a574e482443dbe81c0a2d412797cda/Miao%20Liu%20-%20Product%20Designer%20CV.pdf"
+              href="https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/Miao%20Liu%20-%20Product%20Designer%20CV.pdf"
               download
               className="inline-flex items-center gap-3 px-8 py-4 border-2 border-black bg-white hover:bg-black hover:text-white transition-all duration-300 group cursor-pointer shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px]"
             >
