@@ -220,8 +220,8 @@ export const Contact: React.FC = () => {
             </button>
 
             {/* Resume Download Button */}
-            <a 
-                href="https://raw.githubusercontent.com/mialiu05/portfolio-assets/27e2ad8b19a574e482443dbe81c0a2d412797cda/Miao%20Liu%20-%20Product%20Designer%20CV.pdf" 
+            <a
+                href="https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/Miao%20Liu%20-%20Product%20Designer%20CV.pdf"
                 download
                 className="inline-flex items-center gap-2 text-base md:text-lg font-medium hover:text-swiss-red transition-colors border-b-2 border-transparent hover:border-swiss-red pb-0.5 group"
             >
