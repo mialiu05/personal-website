@@ -76,14 +76,14 @@ export const LifeGallery: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const images = [
-    'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/beyondwork1.JPG',
-    'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/beyond%20work2.JPG',
-    'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/beyond%20work3.JPG',
-    'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/beyond%20work4.jpg',
-    'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/beyondwork5.jpg',
-    'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/beyond%20work6.png',
-    'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/beyond%20work7.png',
-    'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/beyond%20work8.png',
+    'https://assets.imiaoliu.com/beyondwork1.webp',
+    'https://assets.imiaoliu.com/beyond%20work2.webp',
+    'https://assets.imiaoliu.com/beyond%20work3.webp',
+    'https://assets.imiaoliu.com/beyond%20work4.webp',
+    'https://assets.imiaoliu.com/beyondwork5.webp',
+    'https://assets.imiaoliu.com/beyond%20work6.webp',
+    'https://assets.imiaoliu.com/beyond%20work7.webp',
+    'https://assets.imiaoliu.com/beyond%20work8.webp',
   ];
 
   useEffect(() => {

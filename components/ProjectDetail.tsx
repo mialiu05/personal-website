@@ -13,11 +13,11 @@ interface ProjectDetailProps {
   isExiting?: boolean;
 }
 
-// Helper Component for Auto-Playing Videos with Loop and Placeholder
+// Helper Component for Auto-Playing Videos with Placeholder
 // 1. Auto-plays when scrolled into view
-// 2. Loops continuously when mouse hovers
-// 3. Shows placeholder (poster or skeleton) until video is ready
-// preload=metadata + optional poster reduce initial bandwidth; full video loads on play.
+// 2. Pauses when leaving viewport, replays from start when re-entering
+// 3. Replays from start on mouse hover
+// 4. Shows placeholder (poster or skeleton) until video is ready
 const AutoPlayVideo: React.FC<{ src: string; className?: string; poster?: string }> = ({ src, className, poster }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isInView, setIsInView] = useState(false);
@@ -28,57 +28,39 @@ const AutoPlayVideo: React.FC<{ src: string; className?: string; poster?: string
     const container = containerRef.current;
     if (!container) return;
 
-    // Increased rootMargin to 800px to start loading video metadata earlier for smoother experience
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-        }
+        setIsInView(entry.isIntersecting);
       },
-      { threshold: 0.01, rootMargin: '800px' }
+      { threshold: 0.01, rootMargin: '200px' }
     );
 
     observer.observe(container);
     return () => observer.disconnect();
   }, []);
 
+  // Handle play/pause based on viewport visibility
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || !isInView) return;
+    if (!video) return;
 
-    const handleCanPlay = () => {
-      setIsReady(true);
-      video.play().catch(() => {});
-    };
-
-    const handleLoadedMetadata = () => {
-      // Video metadata loaded, show poster or start loading
-      if (poster) {
-        setIsReady(true);
-      }
-    };
-
-    video.addEventListener('canplay', handleCanPlay);
-    video.addEventListener('loadedmetadata', handleLoadedMetadata);
-    
-    // Auto-play when scrolled into view
     if (isInView) {
+      video.currentTime = 0;
       video.play().catch(() => {});
+    } else {
+      video.pause();
     }
+  }, [isInView]);
 
-    return () => {
-      video.removeEventListener('canplay', handleCanPlay);
-      video.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      if (!isInView) {
-        video.pause();
-      }
-    };
-  }, [isInView, poster]);
+  // Mark ready once video can play (for hiding skeleton)
+  const handleCanPlay = () => {
+    setIsReady(true);
+  };
 
   const handleMouseEnter = () => {
     const video = videoRef.current;
     if (video) {
-      // Ensure video plays and loops when mouse hovers
+      video.currentTime = 0;
       video.play().catch(() => {});
     }
   };
@@ -127,22 +109,20 @@ const AutoPlayVideo: React.FC<{ src: string; className?: string; poster?: string
         </div>
       )}
       
-      {/* Video */}
-      {isInView && (
-        <video
-          ref={videoRef}
-          src={src}
-          poster={poster}
-          preload="metadata"
-          muted
-          playsInline
-          loop
-          onMouseEnter={handleMouseEnter}
-          className={`col-start-1 row-start-1 block w-full ${needsNaturalHeight ? 'h-auto' : 'h-full'} ${className.includes('object-contain') ? 'object-contain' : 'object-cover'} transition-opacity duration-500 ${
-            isReady ? 'opacity-100' : 'opacity-0'
-          }`}
-        />
-      )}
+      {/* Video - always mounted so ref is stable for play/pause */}
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        preload="auto"
+        muted
+        playsInline
+        onCanPlay={handleCanPlay}
+        onMouseEnter={handleMouseEnter}
+        className={`col-start-1 row-start-1 block w-full ${needsNaturalHeight ? 'h-auto' : 'h-full'} ${className.includes('object-contain') ? 'object-contain' : 'object-cover'} transition-opacity duration-500 ${
+          isReady ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
       
       <style>{`
         @keyframes shimmer {
@@ -788,9 +768,11 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
       </section>
 
       <section className="border-b border-black">
-        <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
-            <div className="lg:col-span-7 border-b lg:border-b-0 lg:border-r border-black bg-neutral-100">
-                <ImageReveal className="w-full aspect-[4/3] lg:aspect-[4/3] relative group overflow-hidden">
+        {/* Mobile: stacked. Desktop: left image defines height, right text fits within */}
+        <div className="lg:relative">
+            {/* Left: image/video with fixed 4:3 aspect ratio — defines the row height on desktop */}
+            <div className="lg:w-[58.333%] border-b lg:border-b-0 lg:border-r border-black bg-neutral-100">
+                <ImageReveal className="w-full aspect-[4/3] relative group overflow-hidden">
                      {project.videoUrl ? (
                          <AutoPlayVideo src={project.videoUrl} poster={project.imageUrl} className="w-full h-full object-cover" />
                      ) : (
@@ -799,48 +781,46 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                 </ImageReveal>
             </div>
 
-            <div className="lg:col-span-5 p-6 md:p-8 lg:p-12 flex flex-col">
-                <div className="mb-8">
+            {/* Right: text content — absolutely positioned on desktop to match left side height */}
+            <div className="lg:absolute lg:top-0 lg:right-0 lg:w-[41.667%] lg:h-full lg:overflow-y-auto p-6 md:p-8 lg:p-8 flex flex-col">
+                <div className="mb-4 lg:mb-3">
                     <ScrollReveal>
-                        <h3 className="text-xs font-bold uppercase tracking-widest mb-4 text-swiss-red flex items-center gap-2">
+                        <h3 className="text-[10px] md:text-xs font-bold uppercase tracking-widest mb-2 text-swiss-red flex items-center gap-2">
                            <span className="w-2 h-2 bg-black block"></span> Overview
                         </h3>
-                        <p className="text-base md:text-lg lg:text-xl font-medium leading-relaxed text-neutral-800">{project.intro}</p>
+                        <p className="text-sm md:text-base font-medium leading-relaxed text-neutral-800">{project.intro}</p>
                     </ScrollReveal>
                 </div>
-                
+
                 <div className="mt-auto">
-                    <div className="border-t border-black pt-6 mb-6">
-                         <div className="mb-6">
-                            <span className="block text-[10px] md:text-xs lg:text-sm font-bold uppercase tracking-widest text-neutral-400 mb-1">Contribution</span>
-                            <span className="text-sm md:text-base lg:text-lg font-bold block leading-relaxed">{project.role}</span>
+                    <div className="border-t border-black pt-4 lg:pt-3 mb-4 lg:mb-3">
+                         <div className="mb-4 lg:mb-3">
+                            <span className="block text-[10px] md:text-xs font-bold uppercase tracking-widest text-neutral-400 mb-1">Contribution</span>
+                            <span className="text-sm md:text-base font-bold block leading-snug">{project.role}</span>
                          </div>
-                         <div className="grid grid-cols-2 gap-y-6 gap-x-4">
+                         <div className="grid grid-cols-2 gap-y-3 gap-x-4">
                             {metaDetails.map((item) => (
                                 <div key={item.label}>
-                                    <span className="block text-[10px] md:text-xs lg:text-sm font-bold uppercase tracking-widest text-neutral-400 mb-1">{item.label}</span>
+                                    <span className="block text-[10px] md:text-xs font-bold uppercase tracking-widest text-neutral-400 mb-1">{item.label}</span>
                                     {item.isLink ? (
-                                        <a href={normalizeWebsiteUrl(item.value)} target="_blank" rel="noreferrer" className="text-sm md:text-base lg:text-lg font-bold flex items-center gap-2 hover:text-swiss-red transition-colors break-words">
+                                        <a href={normalizeWebsiteUrl(item.value)} target="_blank" rel="noreferrer" className="text-sm font-bold flex items-center gap-2 hover:text-swiss-red transition-colors break-words">
                                             <span className="break-all">{item.value}</span> <ExternalLink size={12} className="flex-shrink-0" />
                                         </a>
                                     ) : (
-                                        <span className="text-sm md:text-base lg:text-lg font-bold block break-words">{item.value}</span>
+                                        <span className="text-sm font-bold block break-words">{item.value}</span>
                                     )}
                                 </div>
                             ))}
                          </div>
                     </div>
 
-                    <div className="border-t border-black/10 pt-6">
-                        <span className="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-3">Outcome</span>
-                        <div className={`grid ${outcomeGridClass} gap-4`}>
+                    <div className="border-t border-black/10 pt-4 lg:pt-3">
+                        <span className="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Outcome</span>
+                        <div className="grid grid-cols-2 gap-3 overflow-hidden">
                             {project.impact.map((item, idx) => (
-                                <div key={idx}>
-                                    <span className="block text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-swiss-red tracking-tighter leading-none mb-1 whitespace-nowrap">{item.value}</span>
-                                    <p className="text-sm md:text-base font-bold leading-tight text-black mb-2">{item.label}</p>
-                                    {item.description && (
-                                        <p className="text-sm md:text-base font-normal leading-relaxed text-neutral-500">{item.description}</p>
-                                    )}
+                                <div key={idx} className="min-w-0">
+                                    <span className="block text-lg sm:text-xl font-black text-swiss-red tracking-tighter leading-tight mb-1 break-words">{item.value}</span>
+                                    <p className="text-xs font-bold leading-tight text-black">{item.label}</p>
                                 </div>
                             ))}
                         </div>
@@ -1047,11 +1027,11 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                         </ScrollReveal>
                     </div>
                     {project.impact && (
-                        <div className={`border-t border-black/10 grid ${outcomeGridClass} divide-y md:divide-y-0 md:divide-x divide-black/10`}>
+                        <div className={`border-t border-black/10 grid ${outcomeGridClass} divide-y md:divide-y-0 md:divide-x divide-black/10 overflow-hidden`}>
                             {project.impact.map((item, idx) => (
-                                <div key={idx} className="p-5 md:p-8">
+                                <div key={idx} className="p-5 md:p-8 min-w-0">
                                     <ScrollReveal delay={idx * 100}>
-                                        <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-swiss-red tracking-tighter leading-none mb-3 whitespace-nowrap">{item.value}</span>
+                                        <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-swiss-red tracking-tighter leading-tight mb-3 break-words">{item.value}</span>
                                         <p className="text-sm md:text-base font-bold leading-tight text-black mb-1">{item.label}</p>
                                         {item.description && (
                                             <p className="text-sm md:text-base font-normal leading-relaxed text-neutral-500">{item.description}</p>
