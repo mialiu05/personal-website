@@ -94,17 +94,17 @@ export const WorkStyle: React.FC = () => {
     {
       title: 'I Create',
       description: 'Technology needs direction. Beyond visual craft, I actively shape system specifications and product value propositions, believing that true innovation emerges when emerging tech meets solid business logic.',
-      image: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/3a5db72872f7516c0d6d4c9deba6128d12229473/I1.png'
+      image: 'https://assets.imiaoliu.com/I1.webp'
     },
     {
       title: 'I Collaborate',
       description: 'Communication is the ultimate problem-solving tool. I thrive in cross-functional environments by bridging engineering and design through user research and agile sprints to align diverse perspectives.',
-      image: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/3a5db72872f7516c0d6d4c9deba6128d12229473/I2.png'
+      image: 'https://assets.imiaoliu.com/I2.webp'
     },
     {
       title: 'I Empower',
       description: 'I believe in designing for the team as much as for the user. By establishing onboarding guides, documentation standards, and review processes, I scale my impact by empowering others to grow.',
-      image: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/3a5db72872f7516c0d6d4c9deba6128d12229473/I3.jpg'
+      image: 'https://assets.imiaoliu.com/I3.webp'
     }
   ];
 

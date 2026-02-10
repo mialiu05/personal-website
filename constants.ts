@@ -65,10 +65,10 @@ export const PROJECTS: Project[] = [
     category: 'Mobile App',
     year: '2025',
     description: 'Redesigned GT30 gaming experience to activate system and hardware capabilities, driving 47,000+ paid conversions and 35.7% revenue growth.',
-    imageUrl: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/Game%204%20Cover.png',
-    videoUrl: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/Game%20Cover.mp4',
+    imageUrl: 'https://assets.imiaoliu.com/Game%204%20Cover.webp',
+    videoUrl: 'https://assets.imiaoliu.com/Game%20Cover.mp4?v=2',
     tags: ['Gamification', 'Monetization', 'Hardware'],
-    role: 'UX & UI Design, Agile Leadership,Growth Strategy',
+    role: 'UX & UI, Agile Leadership, Growth Strategy',
     duration: '4 months',
     website: 'https://www.infinixmobility.com/gt-30',
     impact: [
@@ -77,14 +77,14 @@ export const PROJECTS: Project[] = [
         { value: "11.6%", label: "MAU Growth" },
         { value: "24.1%", label: "Gaming Brand Awareness" }
     ],
-    intro: 'GT30 had strong gaming hardware, but long entry paths and weak hardware-software coordination prevented these capabilities from becoming part of real gameplay. I restructured game entry, in-game interactions, and hardware integration to better align the system with players’ behavior and unlock both experiential and business value.',
+    intro: 'GT30 had strong hardware but weak software integration. I redesigned game entry, in-game interactions, and hardware coordination to turn system capabilities into real gameplay value.',
     caseStudy: {
       problem: {
         title: 'Game capabilities failed to become part of real gameplay',
         content: 'To establish the GT series as a gaming brand, hardware capabilities were continuously upgraded. However, the software experience failed to translate these capabilities into real gameplay.',
         images: [
-            { url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/4.1.1.1.png', caption: 'Brand: Unclear gaming brand identity' },
-            { url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/4.1.1.2.png', caption: 'Product: Low gaming feature adoption and retention' }
+            { url: 'https://assets.imiaoliu.com/4.1.1.1.webp', caption: 'Brand: Unclear gaming brand identity' },
+            { url: 'https://assets.imiaoliu.com/4.1.1.2.webp', caption: 'Product: Low gaming feature adoption and retention' }
         ]
       },
       method: {
@@ -99,12 +99,12 @@ export const PROJECTS: Project[] = [
             layout: 'vertical',
             images: [
               {
-                url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/4.2.1.1%20game%20space.png',
+                url: 'https://assets.imiaoliu.com/4.2.1.1%20game%20space.webp',
                 caption:
                   'Game Space redesigned with a clearer swipe structure and optimized information density, shifting launch from browsing and confirmation to direct selection and continuation.'
               },
               {
-                url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/4.2.1.2%20game%20assistant.png',
+                url: 'https://assets.imiaoliu.com/4.2.1.2%20game%20assistant.webp',
                 caption:
                   'Game Assistant transformed into a customizable, context-aware block layout, enabling access through spatial memory rather than visual search.'
               }
@@ -117,12 +117,12 @@ export const PROJECTS: Project[] = [
             layout: 'vertical',
             images: [
               {
-                url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/4.2.2.1%20Gt%20trigger.png',
+                url: 'https://assets.imiaoliu.com/4.2.2.1%20Gt%20trigger.webp',
                 caption:
                   'Shoulder keys were mapped to in-game actions with guided setup and immediate feedback, helping players build reliable muscle memory.'
               },
               {
-                url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/4.2.2.2%20fan.png',
+                url: 'https://assets.imiaoliu.com/4.2.2.2%20fan.webp',
                 caption:
                   'External cooling was expressed through dynamic states and animations rather than static toggles, reinforcing active performance support.'
               }
@@ -136,12 +136,12 @@ export const PROJECTS: Project[] = [
             images: [
               
               {
-                url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/4.2.3.1%20vocie.png',
+                url: 'https://assets.imiaoliu.com/4.2.3.1%20vocie.webp',
                 caption:
                   'Voice interaction was constrained to command-based execution and enabled only when hands were occupied.'
               },
               {
-                url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/4.2.3.2%20magic.png',
+                url: 'https://assets.imiaoliu.com/4.2.3.2%20magic.webp',
                 caption:
                   'Voice effects were framed as role-based expression that blends naturally into social play.'
               }
@@ -175,10 +175,10 @@ export const PROJECTS: Project[] = [
     category: 'Typography',
     year: '2023',
     description: 'Led UX and visual design for the system’s first AI writing assistant, growing DAU from 1.03 M to 2.79 M with strong user feedback.',
-    imageUrl: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/2%20COVER.png',
-    videoUrl: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/cover2%20.mp4',
+    imageUrl: 'https://assets.imiaoliu.com/2%20COVER.webp',
+    videoUrl: 'https://assets.imiaoliu.com/cover2%20.mp4?v=2',
     tags: ['AI-Driven', 'Growth', 'Productivity'],
-    role: 'UX & UI Design, Visual Strategy, AI Interaction Design, Design Leadership',
+    role: 'UX & UI, Visual Strategy, AI Interaction Design, Design Leadership',
     duration: '5 Months',
     website: 'www.tecno-mobile.com/hios/home/',
     impact: [
@@ -192,8 +192,8 @@ export const PROJECTS: Project[] = [
         title: 'Language Diversity Challenge',
         content: 'In markets like India and Africa, language diversity is immense, with dozens of local languages in one country. People often rely on translation tools in daily life and work. Research showed that improved translation features and local language support significantly enhance user experience and sales.',
         images: [
-            { url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/2.1.1.png', caption: 'Formal addresses and in-market visits in India require dedicated translation support.' },
-            { url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/2.1.2.png', caption: 'Prototype: Phone supported languages and sales performance are positively correlated.' }
+            { url: 'https://assets.imiaoliu.com/2.1.1.webp', caption: 'Formal addresses and in-market visits in India require dedicated translation support.' },
+            { url: 'https://assets.imiaoliu.com/2.1.2.webp', caption: 'Prototype: Phone supported languages and sales performance are positively correlated.' }
         ]
       },
       method: {
@@ -207,7 +207,7 @@ export const PROJECTS: Project[] = [
                     {
                         content: 'In the early phase, we focused on building a powerful, multi-scenario translation experience. User feedback was highly positive, and to our surprise, 80% of one million daily active users turned out to be using social media translation.',
                         image: {
-                            url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/2.2.1.1.png',
+                            url: 'https://assets.imiaoliu.com/2.2.1.1.webp',
                             caption: 'Instanced mesh generation for font glyphs.',
                             type: 'image'
                         }
@@ -215,7 +215,7 @@ export const PROJECTS: Project[] = [
                     {
                         content: 'Many users are young digital natives or small entrepreneurs who rely on the internet and value clear, confident expression. This insight led to the system’s first AI-powered feature.',
                         image: {
-                            url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/2.2.1.2.png',
+                            url: 'https://assets.imiaoliu.com/2.2.1.2.webp',
                             caption: 'Texture atlas generation.',
                             type: 'image'
                         }
@@ -223,7 +223,7 @@ export const PROJECTS: Project[] = [
                     {
                         content: 'I designed an AI workflow triggered directly from the keyboard, creating the most natural and seamless entry point for users.',
                         image: {
-                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/2.2.1.3.mp4',
+                            url: 'https://assets.imiaoliu.com/2.2.1.3.mp4?v=2',
                             caption: 'Velocity-based vertex distortion.',
                             type: 'video'
                         }
@@ -231,7 +231,7 @@ export const PROJECTS: Project[] = [
                     {
                         content: 'All remaining interactions, including new feature updates, are handled within a unified bottom panel.',
                         image: {
-                            url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/2.2.1.4.png',
+                            url: 'https://assets.imiaoliu.com/2.2.1.4.webp',
                             caption: 'Shader-based edge anti-aliasing.',
                             type: 'image'
                         }
@@ -245,7 +245,7 @@ export const PROJECTS: Project[] = [
                     {
                         content: 'Only color transitions are needed to simulate the exploratory process of AI.',
                         image: {
-                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/2.2.2.1.mp4',
+                            url: 'https://assets.imiaoliu.com/2.2.2.1.mp4?v=2',
                             caption: 'Procedural grid generation logic.',
                             type: 'video'
                         }
@@ -253,7 +253,7 @@ export const PROJECTS: Project[] = [
                     {
                         content: 'The color dynamics alone express the subtle differences between each stage of the AI workflow.',
                         image: {
-                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/2.2.2.2.mp4',
+                            url: 'https://assets.imiaoliu.com/2.2.2.2.mp4?v=2',
                             caption: 'Fluid scaling across viewports.',
                             type: 'video'
                         }
@@ -261,7 +261,7 @@ export const PROJECTS: Project[] = [
                     {
                         content: 'I designed the AI brand identity for the entire smartphone line, including the symbol, color direction, and motion language.',
                         image: {
-                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/2.2.2.4.mp4',
+                            url: 'https://assets.imiaoliu.com/2.2.2.4.mp4?v=2',
                             caption: 'Depth-based color interpolation.',
                             type: 'video'
                         }
@@ -269,7 +269,7 @@ export const PROJECTS: Project[] = [
                     {
                         content: 'This design language was widely applied across AI features in OS15.',
                         image: {
-                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/2.2.2.5.mp4',
+                            url: 'https://assets.imiaoliu.com/2.2.2.5.mp4?v=2',
                             caption: 'Organic motion response testing.',
                             type: 'video'
                         }
@@ -277,7 +277,7 @@ export const PROJECTS: Project[] = [
                     {
                         content: '',
                         image: {
-                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/2.2.2.3.mp4',
+                            url: 'https://assets.imiaoliu.com/2.2.2.3.mp4?v=2',
                             caption: 'Final production build.',
                             type: 'video'
                         }
@@ -307,10 +307,10 @@ export const PROJECTS: Project[] = [
     category: 'Design System',
     year: '2025',
     description: 'Redesigned the wallpaper customization flow and creative features, boosting setup success rate by 46% and user satisfaction by 3.7%.',
-    imageUrl: 'https://i.postimg.cc/NF10byhh/A.png',
-    videoUrl: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/Project%201.mp4',
+    imageUrl: 'https://assets.imiaoliu.com/1.webp',
+    videoUrl: 'https://assets.imiaoliu.com/Project%201.mp4?v=2',
     tags: ['Innovation', 'Engagement', 'Aesthetics'],
-    role: 'UX & UI Design, Product Strategy, Cross-Team Collaboration(13 teams), Prototypes',
+    role: 'UX & UI, Product Strategy, Cross-Team Collaboration (13 teams), Prototyping',
     duration: '8 Months',
     website: 'www.infinixmobility.com/xos/',
     impact: [
@@ -319,14 +319,14 @@ export const PROJECTS: Project[] = [
       { value: "46.1%", label: "Apply Success Rate" },
       { value: "3.7%", label: "Overall Satisfaction" }
     ],
-    intro: 'The brand invested significant design resources in each new phone launch to express its aesthetics and vision, but unclear entry points and a confusing flow led to low wallpaper setup success and user satisfaction. To address this, I restructured the personalization system, refined categorization and naming, and applied modular design to enable users to create richer wallpapers at lower design cost.',
+    intro: 'Unclear entry points and confusing flows led to low wallpaper setup success. I restructured the personalization system and applied modular design to help users create richer wallpapers at lower cost.',
     caseStudy: {
       problem: {
         title: 'The Gap Between Design and Use',
         content: 'The brand invested significant design resources into creating unique wallpapers and styles to express its aesthetics and vision. However, the wallpaper page felt like an abandoned library. Users had low success rates in changing wallpapers and little satisfaction with the available styles, revealing a clear gap between design investment and actual experience.',
         images: [
-            { url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/1045d44518431ff6dd8bc483de87219ba7065e24/01.1.png', caption: 'Every new phone launch comes with a new set of wallpapers.' },
-            { url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/47f3c392bbb22f87fd3f6f6063e6ff38664d6ca5/01.2.png', caption: 'User Voices from OS14' }
+            { url: 'https://assets.imiaoliu.com/01.1.webp', caption: 'Every new phone launch comes with a new set of wallpapers.' },
+            { url: 'https://assets.imiaoliu.com/01.2.webp', caption: 'User Voices from OS14' }
         ]
       },
       method: {
@@ -340,7 +340,7 @@ export const PROJECTS: Project[] = [
                     {
                         content: 'Primitive tokens define the smallest atomic values for spacing, color, and typography.',
                         image: { 
-                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/1.02.1.1.mp4', 
+                            url: 'https://assets.imiaoliu.com/1.02.1.1.mp4?v=2', 
                             caption: '',
                             type: 'video'
                         }
@@ -348,7 +348,7 @@ export const PROJECTS: Project[] = [
                     {
                         content: 'New user data and testing revealed that wallpaper usage could not be separated from its context. Setting wallpapers directly from the lock screen or home screen felt more intuitive to users. Based on this insight, I designed a new flow that unifies style editing across AOD, lock screen, and home screen scenarios.',
                         image: { 
-                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/1.2.1.2.mp4', 
+                            url: 'https://assets.imiaoliu.com/1.2.1.2.mp4?v=2', 
                             caption: 'Component states across different interaction modes.',
                             type: 'video'
                         }
@@ -356,7 +356,7 @@ export const PROJECTS: Project[] = [
                     {
                         content: 'Different device series had distinct focuses in wallpaper presentation. After several iterations, I streamlined the structure into a horizontal entry with a cascading layout, adjusting the order to align with each brand\'s launch focus.',
                         image: { 
-                            url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/1.2.2.3.png', 
+                            url: 'https://assets.imiaoliu.com/1.2.1.3.webp',
                             caption: 'Layout grids applied across different viewports.',
                             type: 'image'
                         }
@@ -364,7 +364,7 @@ export const PROJECTS: Project[] = [
                     {
                         content: 'For other styles such as AOD, lighting effects, and fonts, I unified the settings structure to reduce user cognitive load.',
                         image: { 
-                            url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/1.2.2.4.png', 
+                            url: 'https://assets.imiaoliu.com/1.2.1.4.webp',
                             caption: 'Interaction patterns standardized for touch targets.',
                             type: 'image'
                         }
@@ -378,7 +378,7 @@ export const PROJECTS: Project[] = [
                     {
                         content: 'Vogue Portrait: Portrait * Outline * Background',
                         image: { 
-                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/1.2.2.1.mp4', 
+                            url: 'https://assets.imiaoliu.com/1.2.2.1.mp4?v=2', 
                             caption: 'Responsive behavior on foldable displays.',
                             type: 'video'
                         }
@@ -386,7 +386,7 @@ export const PROJECTS: Project[] = [
                     {
                         content: 'Graffiti: Text * Sticker * Background',
                         image: { 
-                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/1.2.2.2.mp4', 
+                            url: 'https://assets.imiaoliu.com/1.2.2.2.mp4?v=2', 
                             caption: 'Vogue Portrait: Portrait * Outline * Background',
                             type: 'video'
                         }
@@ -394,7 +394,7 @@ export const PROJECTS: Project[] = [
                     {
                         content: 'AI Wallpaper: Text Prompt * Art Style',
                         image: { 
-                            url: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/1.2.2.3.mp4', 
+                            url: 'https://assets.imiaoliu.com/1.2.2.3.mp4?v=2', 
                             caption: 'Localization stress testing for text expansion.',
                             type: 'video'
                         }
@@ -425,10 +425,10 @@ export const PROJECTS: Project[] = [
     category: 'Product Design',
     year: '2025',
     description: 'Established design guidelines to ensure consistent, high-quality experiences across entry-level hardware, driving a user satisfaction increase from 8.3 to 8.8.',
-    imageUrl: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/e121fd7a72bc682f14b6033bb2ad7b2b3c73b784/cover%203.png',
-    videoUrl: 'https://github.com/mialiu05/portfolio-assets/raw/refs/heads/main/Video%20cover%203.mp4',
+    imageUrl: 'https://assets.imiaoliu.com/cover%203.webp',
+    videoUrl: 'https://assets.imiaoliu.com/Video%20cover%203.mp4?v=2',
     tags: ['Scalability', 'Standards', 'Adaptivity'],
-    role: 'User Research Visual Strategy, Design Standards',
+    role: 'User Research, Visual Strategy, Design Standards',
     duration: '2 months',
     website: 'www.mobile-phantom.com/phantom-v-flip/',
     impact: [
@@ -441,8 +441,8 @@ export const PROJECTS: Project[] = [
         title: 'Market & Hardware Constraints',
         content: 'Users were overwhelmed by dense tables and charts. They spent hours manually correlating data points to find anomalies. The product was powerful but inaccessible.',
         images: [
-            { url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/e121fd7a72bc682f14b6033bb2ad7b2b3c73b784/3.1.1.png', caption: 'Hardware display limitations' },
-            { url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/e121fd7a72bc682f14b6033bb2ad7b2b3c73b784/3.1.2.png', caption: 'New and inexperienced smartphone users' }
+            { url: 'https://assets.imiaoliu.com/3.1.1.webp', caption: 'Hardware display limitations' },
+            { url: 'https://assets.imiaoliu.com/3.1.2.webp', caption: 'New and inexperienced smartphone users' }
         ]
       },
       method: {
@@ -455,15 +455,15 @@ export const PROJECTS: Project[] = [
                 layout: 'vertical',
                 images: [
                     {
-                        url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/main/3.2.1.png',
+                        url: 'https://assets.imiaoliu.com/3.2.1.webp',
                         caption: 'Try a spacious layout with bright, colorful cards.'
                     },
                     {
-                        url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/e121fd7a72bc682f14b6033bb2ad7b2b3c73b784/3.2.2.png',
+                        url: 'https://assets.imiaoliu.com/3.2.2.webp',
                         caption: ''
                     },
                     {
-                        url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/e121fd7a72bc682f14b6033bb2ad7b2b3c73b784/3.2.3.png',
+                        url: 'https://assets.imiaoliu.com/3.2.3.webp',
                         caption: ''
                     }
                 ]
@@ -472,11 +472,11 @@ export const PROJECTS: Project[] = [
                 layout: 'grid', 
                 images: [
                     {
-                        url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/e121fd7a72bc682f14b6033bb2ad7b2b3c73b784/3.2.4.1.png',
+                        url: 'https://assets.imiaoliu.com/3.2.4.1.webp',
                         caption: 'Before: itel A23S — 2 GB RAM | 32 GB ROM | 854*480'
                     },
                     {
-                        url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/e121fd7a72bc682f14b6033bb2ad7b2b3c73b784/3.2.4.2.png',
+                        url: 'https://assets.imiaoliu.com/3.2.4.2.webp',
                         caption: 'After'
                     }
                 ]
@@ -485,11 +485,11 @@ export const PROJECTS: Project[] = [
                 layout: 'vertical',
                 images: [
                     {
-                        url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/e121fd7a72bc682f14b6033bb2ad7b2b3c73b784/3.2.5.png',
+                        url: 'https://assets.imiaoliu.com/3.2.5.webp',
                         caption: 'Unfortunately, this system design was eventually discontinued due to changes in the device release plan. However, I documented and refined a set of design principles tailored for low-performance displays.'
                     },
                     {
-                        url: 'https://raw.githubusercontent.com/mialiu05/portfolio-assets/e121fd7a72bc682f14b6033bb2ad7b2b3c73b784/3.2.6.png',
+                        url: 'https://assets.imiaoliu.com/3.2.6.webp',
                         caption: 'These principles were further stress-tested and adapted for the first-generation vertical foldable device, proving the system\'s flexibility.'
                     }
                 ]

@@ -25,7 +25,6 @@ const ShowreelVideo: React.FC = () => {
           className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-700 grayscale contrast-125"
           autoPlay
           muted
-          loop
           playsInline
           preload="metadata"
         >
