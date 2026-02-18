@@ -1,15 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Preloader } from './components/Preloader';
-import { WorkPage } from './pages/WorkPage';
-import { AboutPage } from './pages/AboutPage';
-import { ProjectDetailPage } from './pages/ProjectDetailPage';
+
+// Lazy-load route-level page components
+const WorkPage = lazy(() => import('./pages/WorkPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const ProjectDetailPage = lazy(() => import('./pages/ProjectDetailPage'));
 
 const App: React.FC = () => {
   const location = useLocation();
   const isInitialMount = useRef(true);
-  
+
   // Track initial path to determine if Preloader should show (only on homepage)
   const initialPath = useRef(location.pathname);
   const shouldShowPreloader = initialPath.current === '/';
@@ -67,11 +69,13 @@ const App: React.FC = () => {
         <Header activeSection={getActiveSection()} />
 
         <main className="relative">
-          <Routes>
-            <Route path="/" element={<WorkPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/project/:id" element={<ProjectDetailPage />} />
-          </Routes>
+          <Suspense fallback={null}>
+            <Routes>
+              <Route path="/" element={<WorkPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/project/:id" element={<ProjectDetailPage />} />
+            </Routes>
+          </Suspense>
         </main>
       </div>
     </>

@@ -66,13 +66,6 @@ const LazyImage: React.FC<{
           }`}
         />
       )}
-
-      <style>{`
-        @keyframes shimmer {
-          0% { background-position: -200% 0; }
-          100% { background-position: 200% 0; }
-        }
-      `}</style>
     </div>
   );
 };
@@ -124,13 +117,23 @@ export const ProjectGrid: React.FC<ProjectGridProps> = ({ onProjectClick }) => {
             className={`text-left group relative border border-black md:border-2 overflow-hidden w-full focus:outline-none focus:ring-2 focus:ring-swiss-red/50 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all duration-300 bg-white ${project.comingSoon ? 'cursor-default' : 'cursor-pointer'}`}
           >
             <div className="aspect-[4/3] overflow-hidden relative bg-neutral-100">
-              {/* Static Image (Top Layer) - Lazy load below-fold; priority for first */}
+              {/* Static Image (Top Layer) - Grayscale, fades out on hover */}
               <LazyImage
                 src={project.imageUrl}
                 alt={project.title}
                 loading={index < 3 ? 'eager' : 'lazy'}
-                className={`w-full h-full object-cover z-10 transition-all duration-700 grayscale ${!project.comingSoon ? 'group-hover:opacity-0' : ''}`}
+                className={`w-full h-full object-cover z-10 transition-opacity duration-500 grayscale ${!project.comingSoon ? 'group-hover:opacity-0' : ''}`}
               />
+
+              {/* Colored fallback image with slow zoom on hover (when no video) */}
+              {!project.comingSoon && !project.videoUrl && (
+                <LazyImage
+                  src={project.imageUrl}
+                  alt={project.title}
+                  loading={index < 3 ? 'eager' : 'lazy'}
+                  className="w-full h-full object-cover z-5 transition-transform duration-[800ms] ease-out group-hover:scale-[1.08]"
+                />
+              )}
 
               {/* Video: preload=metadata for first 3 projects (above fold), none for others */}
               {!project.comingSoon && project.videoUrl && (
