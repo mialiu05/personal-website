@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ProjectDetail } from '../components/ProjectDetail';
 import { PROJECTS } from '../constants';
 
-export const ProjectDetailPage: React.FC = () => {
+const ProjectDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [exitingProject, setExitingProject] = useState(false);
@@ -42,3 +42,5 @@ export const ProjectDetailPage: React.FC = () => {
     />
   );
 };
+
+export default ProjectDetailPage;

@@ -1,30 +1,38 @@
 import path from 'path';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import compression from 'vite-plugin-compression';
 
-export default defineConfig(({ mode }) => {
-    const env = loadEnv(mode, '.', '');
-    return {
-      server: {
-        port: 5173,
-        host: '0.0.0.0',
-        strictPort: false,
-        open: true,
+export default defineConfig({
+    server: {
+      port: 5173,
+      host: '0.0.0.0',
+      strictPort: false,
+      open: true,
+    },
+    preview: {
+      port: 5173,
+      strictPort: false,
+      open: true,
+    },
+    plugins: [
+      react(),
+      compression({ algorithm: 'gzip' }),
+      compression({ algorithm: 'brotliCompress', ext: '.br' }),
+    ],
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+            'vendor-icons': ['lucide-react'],
+          },
+        },
       },
-      preview: {
-        port: 5173,
-        strictPort: false,
-        open: true,
-      },
-      plugins: [react()],
-      define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
-      },
-      resolve: {
-        alias: {
-          '@': path.resolve(__dirname, '.'),
-        }
+    },
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, '.'),
       }
-    };
+    }
 });

@@ -4,7 +4,7 @@ import { WorkStyle } from '../components/WorkStyle';
 import { LifeGallery } from '../components/LifeGallery';
 import { Contact } from '../components/Contact';
 
-export const AboutPage: React.FC = () => {
+const AboutPage: React.FC = () => {
   return (
     <>
       {/* About Section */}
@@ -21,3 +21,5 @@ export const AboutPage: React.FC = () => {
     </>
   );
 };
+
+export default AboutPage;

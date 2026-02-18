@@ -4,7 +4,7 @@ import { Hero } from '../components/Hero';
 import { ProjectGrid } from '../components/ProjectGrid';
 import { Contact } from '../components/Contact';
 
-export const WorkPage: React.FC = () => {
+const WorkPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleProjectClick = (id: string) => {
@@ -31,3 +31,5 @@ export const WorkPage: React.FC = () => {
     </>
   );
 };
+
+export default WorkPage;
