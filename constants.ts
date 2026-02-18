@@ -60,123 +60,13 @@ export const SKILLS = {
 
 export const PROJECTS: Project[] = [
   {
-    id: '4',
-    title: 'Gaming Experience',
-    category: 'Mobile App',
-    year: '2025',
-    description: 'Redesigned GT30 gaming experience to activate system and hardware capabilities, driving 47,000+ paid conversions and 35.7% revenue growth.',
-    imageUrl: 'https://assets.imiaoliu.com/Game%204%20Cover.webp',
-    videoUrl: 'https://assets.imiaoliu.com/Game%20Cover.mp4?v=2',
-    tags: ['Gamification', 'Monetization', 'Hardware'],
-    role: 'UX & UI, Agile Leadership, Growth Strategy',
-    duration: '4 months',
-    website: 'https://www.infinixmobility.com/gt-30',
-    impact: [
-        { value: "47k", label: "Paid Conversions" },
-        { value: "35.7%", label: "Revenue Growth" },
-        { value: "11.6%", label: "MAU Growth" },
-        { value: "24.1%", label: "Gaming Brand Awareness" }
-    ],
-    intro: 'GT30 had strong hardware but weak software integration. I redesigned game entry, in-game interactions, and hardware coordination to turn system capabilities into real gameplay value.',
-    caseStudy: {
-      problem: {
-        title: 'Game capabilities failed to become part of real gameplay',
-        content: 'To establish the GT series as a gaming brand, hardware capabilities were continuously upgraded. However, the software experience failed to translate these capabilities into real gameplay.',
-        images: [
-            { url: 'https://assets.imiaoliu.com/4.1.1.1.webp', caption: 'Brand: Unclear gaming brand identity' },
-            { url: 'https://assets.imiaoliu.com/4.1.1.2.webp', caption: 'Product: Low gaming feature adoption and retention' }
-        ]
-      },
-      method: {
-        title: 'Gameplay System Design',
-        content:
-          'I redesigned GT30\'s end-to-end gaming experience to make system and hardware capabilities usable during real gameplay.',
-        blocks: [
-          {
-            title: 'Faster Entry to Gameplay',
-            content:
-              'I focused on shortening the distance between entering the system and starting gameplay by restructuring both Game Space and Game Assistant.',
-            layout: 'vertical',
-            images: [
-              {
-                url: 'https://assets.imiaoliu.com/4.2.1.1%20game%20space.webp',
-                caption:
-                  'Game Space redesigned with a clearer swipe structure and optimized information density, shifting launch from browsing and confirmation to direct selection and continuation.'
-              },
-              {
-                url: 'https://assets.imiaoliu.com/4.2.1.2%20game%20assistant.webp',
-                caption:
-                  'Game Assistant transformed into a customizable, context-aware block layout, enabling access through spatial memory rather than visual search.'
-              }
-            ]
-          },
-          {
-            title: 'Usable Hardware in Gameplay',
-            content:
-              'I redesigned how gaming hardware was presented and interacted with, focusing on clarity, feedback, and predictability.',
-            layout: 'vertical',
-            images: [
-              {
-                url: 'https://assets.imiaoliu.com/4.2.2.1%20Gt%20trigger.webp',
-                caption:
-                  'Shoulder keys were mapped to in-game actions with guided setup and immediate feedback, helping players build reliable muscle memory.'
-              },
-              {
-                url: 'https://assets.imiaoliu.com/4.2.2.2%20fan.webp',
-                caption:
-                  'External cooling was expressed through dynamic states and animations rather than static toggles, reinforcing active performance support.'
-              }
-            ]
-          },
-          {
-            title: 'Low-Interruption Intelligence',
-            content:
-              'All intelligent and multimodal features were designed around minimal interruption to avoid being ignored in high-intensity gameplay.',
-            layout: 'vertical',
-            images: [
-              
-              {
-                url: 'https://assets.imiaoliu.com/4.2.3.1%20vocie.webp',
-                caption:
-                  'Voice interaction was constrained to command-based execution and enabled only when hands were occupied.'
-              },
-              {
-                url: 'https://assets.imiaoliu.com/4.2.3.2%20magic.webp',
-                caption:
-                  'Voice effects were framed as role-based expression that blends naturally into social play.'
-              }
-            ]
-          }
-        ]
-      },
-      
-      result: {
-        title: 'Fluid Navigation',
-        content: 'User testing confirmed that the gesture-based interface significantly improved on-the-go usability.',
-        items: [
-            { title: '50%', description: 'Reduction in input time compared to standard map apps.' },
-            { title: '10k+', description: 'Daily active users achieved within 3 months of launch.' },
-            { title: '4.8', description: 'Average App Store rating based on 500+ reviews.' }
-        ]
-      },
-      reflection: {
-        title: 'Invisible Design',
-        content: '',
-        items: [
-            { title: 'Design the Funnel, Not the Feature', description: 'I used behavioral data to redesign the path from intent to gameplay and remove hidden drop-offs.' },
-            { title: 'Advanced Users Are Still First-Time Users', description: 'I designed for learnability, not assumed expertise, to help power gamers build muscle memory.' }
-        ]
-      }
-    }
-  },
-  {
     id: '2',
     title: 'AI Writing Assistant',
     category: 'Typography',
     year: '2023',
     description: 'Led UX and visual design for the system’s first AI writing assistant, growing DAU from 1.03 M to 2.79 M with strong user feedback.',
-    imageUrl: 'https://assets.imiaoliu.com/2%20COVER.webp',
-    videoUrl: 'https://assets.imiaoliu.com/cover2%20.mp4?v=2',
+    imageUrl: '/covers/ai-writing-cover.webp',
+    videoUrl: '',
     tags: ['AI-Driven', 'Growth', 'Productivity'],
     role: 'UX & UI, Visual Strategy, AI Interaction Design, Design Leadership',
     duration: '5 Months',
@@ -307,8 +197,8 @@ export const PROJECTS: Project[] = [
     category: 'Design System',
     year: '2025',
     description: 'Redesigned the wallpaper customization flow and creative features, boosting setup success rate by 46% and user satisfaction by 3.7%.',
-    imageUrl: 'https://assets.imiaoliu.com/1.webp',
-    videoUrl: 'https://assets.imiaoliu.com/Project%201.mp4?v=2',
+    imageUrl: '/covers/wallpaper-cover.webp',
+    videoUrl: '',
     tags: ['Innovation', 'Engagement', 'Aesthetics'],
     role: 'UX & UI, Product Strategy, Cross-Team Collaboration (13 teams), Prototyping',
     duration: '8 Months',
@@ -425,8 +315,8 @@ export const PROJECTS: Project[] = [
     category: 'Product Design',
     year: '2025',
     description: 'Established design guidelines to ensure consistent, high-quality experiences across entry-level hardware, driving a user satisfaction increase from 8.3 to 8.8.',
-    imageUrl: 'https://assets.imiaoliu.com/cover%203.webp',
-    videoUrl: 'https://assets.imiaoliu.com/Video%20cover%203.mp4?v=2',
+    imageUrl: '/covers/design-system-cover.webp',
+    videoUrl: '',
     tags: ['Scalability', 'Standards', 'Adaptivity'],
     role: 'User Research, Visual Strategy, Design Standards',
     duration: '2 months',
@@ -505,6 +395,86 @@ export const PROJECTS: Project[] = [
         title: '',
         content: '',
         items: []
+      }
+    }
+  },
+  {
+    id: '4',
+    title: 'Gaming Experience',
+    category: 'Mobile App',
+    year: '2025',
+    description: 'Redesigned GT30 gaming experience to activate system and hardware capabilities, driving 47,000+ paid conversions and 35.7% revenue growth.',
+    imageUrl: '/covers/gaming-cover.webp',
+    videoUrl: '',
+    tags: ['Gamification', 'Monetization', 'Hardware'],
+    role: 'UX & UI, Agile Leadership, Growth Strategy',
+    duration: '4 months',
+    website: 'https://www.infinixmobility.com/gt-30',
+    impact: [
+        { value: "47k", label: "Paid Conversions" },
+        { value: "35.7%", label: "Revenue Growth" },
+        { value: "11.6%", label: "MAU Growth" },
+        { value: "24.1%", label: "Gaming Brand Awareness" }
+    ],
+    intro: 'GT30 had strong hardware but weak software integration. I redesigned game entry, in-game interactions, and hardware coordination to turn system capabilities into real gameplay value.',
+    caseStudy: {
+      problem: {
+        title: 'Game capabilities failed to become part of real gameplay',
+        content: 'To establish the GT series as a gaming brand, hardware capabilities were continuously upgraded. However, the software experience failed to translate these capabilities into real gameplay.',
+        images: [
+            { url: 'https://assets.imiaoliu.com/4.1.1.1.webp', caption: 'Brand: Unclear gaming brand identity' },
+            { url: 'https://assets.imiaoliu.com/4.1.1.2.webp', caption: 'Product: Low gaming feature adoption and retention' }
+        ]
+      },
+      method: {
+        title: 'Gameplay System Design',
+        content: 'I redesigned GT30\'s end-to-end gaming experience to make system and hardware capabilities usable during real gameplay.',
+        blocks: [
+          {
+            title: 'Faster Entry to Gameplay',
+            content: 'I focused on shortening the distance between entering the system and starting gameplay by restructuring both Game Space and Game Assistant.',
+            layout: 'vertical',
+            images: [
+              { url: 'https://assets.imiaoliu.com/4.2.1.1%20game%20space.webp', caption: 'Game Space redesigned with a clearer swipe structure and optimized information density, shifting launch from browsing and confirmation to direct selection and continuation.' },
+              { url: 'https://assets.imiaoliu.com/4.2.1.2%20game%20assistant.webp', caption: 'Game Assistant transformed into a customizable, context-aware block layout, enabling access through spatial memory rather than visual search.' }
+            ]
+          },
+          {
+            title: 'Usable Hardware in Gameplay',
+            content: 'I redesigned how gaming hardware was presented and interacted with, focusing on clarity, feedback, and predictability.',
+            layout: 'vertical',
+            images: [
+              { url: 'https://assets.imiaoliu.com/4.2.2.1%20Gt%20trigger.webp', caption: 'Shoulder keys were mapped to in-game actions with guided setup and immediate feedback, helping players build reliable muscle memory.' },
+              { url: 'https://assets.imiaoliu.com/4.2.2.2%20fan.webp', caption: 'External cooling was expressed through dynamic states and animations rather than static toggles, reinforcing active performance support.' }
+            ]
+          },
+          {
+            title: 'Low-Interruption Intelligence',
+            content: 'All intelligent and multimodal features were designed around minimal interruption to avoid being ignored in high-intensity gameplay.',
+            layout: 'vertical',
+            images: [
+              { url: 'https://assets.imiaoliu.com/4.2.3.1%20vocie.webp', caption: 'Voice interaction was constrained to command-based execution and enabled only when hands were occupied.' },
+              { url: 'https://assets.imiaoliu.com/4.2.3.2%20magic.webp', caption: 'Voice effects were framed as role-based expression that blends naturally into social play.' }
+            ]
+          }
+        ]
+      },
+      result: {
+        title: 'Fluid Navigation',
+        content: 'User testing confirmed that the gesture-based interface significantly improved on-the-go usability.',
+        items: [
+            { title: '50%', description: 'Reduction in input time compared to standard map apps.' },
+            { title: '10k+', description: 'Daily active users achieved within 3 months of launch.' },
+            { title: '4.8', description: 'Average App Store rating based on 500+ reviews.' }
+        ]
+      },
+      reflection: {
+        title: 'Invisible Design',
+        content: '',
+        items: [
+            { title: 'Design the Funnel, Not the Feature', description: 'I used behavioral data to redesign the path from intent to gameplay and remove hidden drop-offs.' },
+            { title: 'Advanced Users Are Still First-Time Users', description: 'I designed for learnability, not assumed expertise, to help power gamers build muscle memory.' }
+        ]
       }
     }
   }
