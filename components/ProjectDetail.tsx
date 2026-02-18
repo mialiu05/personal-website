@@ -1073,9 +1073,17 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
               </div>
               
               <div className="relative w-full aspect-[4/3] overflow-hidden bg-neutral-900">
-                  <LazyImage src={nextProject.imageUrl} alt="Next" className="absolute inset-0 w-full h-full z-10 transition-all duration-700 grayscale group-hover:opacity-0" />
+                  {/* Static Image (Top Layer) - Grayscale, fades out on hover */}
+                  <LazyImage src={nextProject.imageUrl} alt="Next" className="absolute inset-0 w-full h-full z-10 transition-opacity duration-500 grayscale group-hover:opacity-0" />
+
+                  {/* Colored fallback image with slow zoom on hover (when no video) */}
+                  {!nextProject.videoUrl && (
+                    <LazyImage src={nextProject.imageUrl} alt="Next" className="absolute inset-0 w-full h-full z-5 transition-transform duration-[800ms] ease-out group-hover:scale-[1.08]" />
+                  )}
+
+                  {/* Video layer (when available) */}
                   {nextProject.videoUrl && (
-                     <video 
+                     <video
                         ref={nextVideoRef}
                         src={nextProject.videoUrl}
                         preload="none"
@@ -1084,7 +1092,9 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
                         className="absolute inset-0 w-full h-full object-cover z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                      />
                   )}
-                  <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+
+                  {/* Overlay with Arrow */}
+                  <div className="absolute inset-0 z-20 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center pointer-events-none">
                       <div className="bg-white text-black border border-black rounded-full p-5 opacity-0 translate-y-8 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transform scale-90 group-hover:scale-100">
                           <ArrowUpRight size={32} strokeWidth={2.5} />
                       </div>
