@@ -742,7 +742,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
         <div className="grid grid-cols-12 relative z-10 pointer-events-none">
             <div className="col-span-12 p-12 md:p-24">
                 <ScrollReveal>
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] mb-6 break-words pointer-events-auto">{project.title}</h1>
+                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.95] md:leading-[0.9] mb-6 break-normal pointer-events-auto">{project.title}</h1>
                 </ScrollReveal>
                 <div className="flex flex-wrap gap-3 mt-2 pointer-events-auto">
                     {project.tags.slice(0, 3).map(tag => (
