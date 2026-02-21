@@ -818,14 +818,14 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, o
 
       <section id="case-study-wrapper" className="border-b border-black relative">
         <div className="grid grid-cols-1 lg:grid-cols-12">
-            <div className="hidden md:block md:col-span-4 lg:col-span-3 border-r border-black">
+            <div className="hidden lg:block lg:col-span-3 border-r border-black">
                 <div className="sticky top-24 p-8">
                     <span className="text-[10px] md:text-xs lg:text-sm font-bold uppercase tracking-widest text-neutral-400 mb-4 block">Contents</span>
                     <div>{renderTocItems(false)}</div>
                 </div>
             </div>
 
-            <div className="col-span-1 md:col-span-8 lg:col-span-9 bg-white">
+            <div className="col-span-1 lg:col-span-9 bg-white">
                 <div id="challenge" className="border-b border-black/10">
                      <div className="p-[1.5em] md:p-[2.5em] max-w-5xl">
                         <ScrollReveal>
