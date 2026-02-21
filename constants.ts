@@ -54,7 +54,7 @@ export const SKILLS = {
     'ChatGPT',
     'Python',
     'Perplexity',
-    'NotebookLLM'
+    'NotebookLM'
   ]
 };
 
